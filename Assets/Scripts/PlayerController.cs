@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * customized version of https://www.assetstore.unity3d.com/en/#!/content/11228 
+ * 
+ */
+
+
 public class PlayerController : MonoBehaviour
 {
 	[HideInInspector]
@@ -12,17 +18,14 @@ public class PlayerController : MonoBehaviour
 
     public float moveForce = 365f;          // Amount of force added to move the player left and right.
     public float maxSpeed = 5f;             // The fastest the player can travel in the x axis.
-    public AudioClip[] jumpClips;           // Array of clips for when the player jumps.
     public float jumpForce = 1000f;         // Amount of force added when the player jumps.
-    public AudioClip[] taunts;              // Array of clips for when the player taunts.
-    public float tauntProbability = 50f;    // Chance of a taunt happening.
-    public float tauntDelay = 1f;           // Delay for when the taunt should happen.
 
-
-    private int tauntIndex;                 // The index of the taunts array indicating the most recent taunt.
+    
     private Transform groundCheck;          // A position marking where to check if the player is grounded.
     private bool grounded = false;          // Whether or not the player is grounded.
     //private Animator anim;                  // Reference to the player's animator component.
+
+    private Rigidbody2D m_body;
 
 
     void Awake()
@@ -30,6 +33,8 @@ public class PlayerController : MonoBehaviour
         // Setting up references.
         groundCheck = transform.Find("groundCheck");
         //anim = GetComponent<Animator>();
+        m_body = GetComponent<Rigidbody2D>();
+        Debug.Log("Drag=" + m_body.drag);
     }
 
 
@@ -51,8 +56,13 @@ public class PlayerController : MonoBehaviour
 
         if (grounded && h == 0.0f)
         {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            Debug.Log("BREMSEN");
+            //GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            //Debug.Log("BREMSEN");
+            m_body.drag = 2.0f;
+        }
+        else
+        {
+            m_body.drag = 0.0f;
         }
 
         // The Speed animator parameter is set to the absolute value of the horizontal input.
@@ -82,9 +92,7 @@ public class PlayerController : MonoBehaviour
         {
             // Set the Jump animator trigger parameter.
             //anim.SetTrigger("Jump");
-
-            // Play a random jump audio clip.
-            int i = Random.Range(0, jumpClips.Length);
+            
             //AudioSource.PlayClipAtPoint(jumpClips[i], transform.position);
 
             // Add a vertical force to the player.
