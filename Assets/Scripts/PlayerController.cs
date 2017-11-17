@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 /*
  * customized version of https://www.assetstore.unity3d.com/en/#!/content/11228 
  * 
@@ -27,6 +27,17 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D m_body;
 
+    [SerializeField] private bool m_forbidAirMovement = false;
+
+    [SerializeField] private float m_movementDrag = 2.0f;
+
+    [SerializeField] private int m_hitpoints = 3;
+
+    [SerializeField] private Image[] m_patchImages;
+
+    private float m_currentDamageTime;
+    private float m_damageTime = 0.25f;
+    private SpriteRenderer m_spriteRenderer;
 
     void Awake()
     {
@@ -34,7 +45,8 @@ public class PlayerController : MonoBehaviour
         groundCheck = transform.Find("groundCheck");
         //anim = GetComponent<Animator>();
         m_body = GetComponent<Rigidbody2D>();
-        Debug.Log("Drag=" + m_body.drag);
+        //Debug.Log("Drag=" + m_body.drag);
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
 
@@ -46,6 +58,16 @@ public class PlayerController : MonoBehaviour
         // If the jump button is pressed and the player is grounded then the player should jump.
         if (Input.GetButtonDown("Jump") && grounded)
             jump = true;
+
+        if (m_currentDamageTime > 0.0f)
+        {
+            m_currentDamageTime -= Time.deltaTime;
+            if (m_currentDamageTime <= 0.0f)
+            {
+                m_currentDamageTime = 0.0f;
+                m_spriteRenderer.color = Color.white;
+            }
+        }
     }
 
 
@@ -58,7 +80,7 @@ public class PlayerController : MonoBehaviour
         {
             //GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             //Debug.Log("BREMSEN");
-            m_body.drag = 2.0f;
+            m_body.drag = m_movementDrag;
         }
         else
         {
@@ -70,8 +92,22 @@ public class PlayerController : MonoBehaviour
 
         // If the player is changing direction (h has a different sign to velocity.x) or hasn't reached maxSpeed yet...
         if (h * GetComponent<Rigidbody2D>().velocity.x < maxSpeed)
-            // ... add a force to the player.
-            GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * moveForce);
+        {
+            if (m_forbidAirMovement)
+            {
+                if (grounded)
+                {
+                    // ... add a force to the player.
+                    GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * moveForce);
+                }
+            }
+            else
+            {
+                // ... add a force to the player.
+                GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * moveForce);
+            }
+        }
+            
 
         // If the player's horizontal velocity is greater than the maxSpeed...
         if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > maxSpeed)
@@ -114,5 +150,34 @@ public class PlayerController : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
     }
-    
+
+    public void ReceiveDamage()
+    {
+        if (m_hitpoints > 0)
+        {
+            m_currentDamageTime = m_damageTime;
+            m_spriteRenderer.color = Color.red;
+
+            m_hitpoints--;
+            ShowCurrentLifeStatus();
+            if (m_hitpoints == 0)
+            {
+                Debug.Log("DEAD");
+            }
+        }
+        Debug.Log("DAMAGE");
+    }
+
+    private void ShowCurrentLifeStatus()
+    {
+        foreach (var patch in m_patchImages)
+        {
+            patch.enabled = false;
+        }
+        for (int i = 0; i < m_patchImages.Length; ++i)
+        {
+            if (m_hitpoints >= (i+1))
+                m_patchImages[i].enabled = true;
+        }
+    }
 }
