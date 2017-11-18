@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer m_spriteRenderer;
 
     private Animator m_animator;
+    private bool m_hasKey;
 
     void Awake()
     {
@@ -199,5 +200,10 @@ public class PlayerController : MonoBehaviour
             if (m_hitpoints >= (i+1))
                 m_patchImages[i].enabled = true;
         }
+    }
+
+    public bool HasKey()
+    {
+        return m_hasKey;
     }
 }
