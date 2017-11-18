@@ -13,7 +13,11 @@ public class Key : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            keyImage.sprite = keySprite;
+            var player = other.GetComponent<PlayerController>();
+            if (player)
+            {
+                player.PickupKey();
+            }
             if(otherKey)
                 Destroy(otherKey.gameObject);
             Destroy(gameObject);

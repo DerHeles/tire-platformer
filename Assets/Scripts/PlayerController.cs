@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private int m_hitpoints = 3;
 
-    [SerializeField] private Image[] m_patchImages;
 
     private float m_currentDamageTime;
     private float m_damageTime = 0.25f;
@@ -43,6 +42,14 @@ public class PlayerController : MonoBehaviour
 
     private Animator m_animator;
     private bool m_hasKey;
+
+    [Header("UI")]
+    [SerializeField] private Image[] m_patchImages;
+
+    [SerializeField] private Image keyImage;
+    [SerializeField] private Sprite keySprite;
+    [SerializeField] private Sprite keySpriteInvisible;
+
 
     void Awake()
     {
@@ -205,5 +212,17 @@ public class PlayerController : MonoBehaviour
     public bool HasKey()
     {
         return m_hasKey;
+    }
+
+    public void UseKey()
+    {
+        m_hasKey = false;
+        keyImage.sprite = keySpriteInvisible;
+    }
+
+    public void PickupKey()
+    {
+        m_hasKey = true;
+        keyImage.sprite = keySprite;
     }
 }
