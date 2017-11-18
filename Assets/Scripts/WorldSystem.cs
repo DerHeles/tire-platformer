@@ -40,7 +40,8 @@ public class WorldSystem : MonoBehaviour
         //player.position += new Vector2(m_worldOffset.x, m_worldOffset.y);
         player.transform.position += m_worldOffset;
         m_inEvilWorld = false;
-        camera.WorldSwitchCameraReset();
+        //camera.WorldSwitchCameraReset();
+        camera.transform.position += m_worldOffset;
     }
 
     public void EnterEvilWorld()
@@ -48,6 +49,7 @@ public class WorldSystem : MonoBehaviour
         //player.position -= new Vector2(m_worldOffset.x, m_worldOffset.y);
         player.transform.position -= m_worldOffset;
         m_inEvilWorld = true;
-        camera.WorldSwitchCameraReset();
+        //camera.WorldSwitchCameraReset();
+        camera.transform.position -= m_worldOffset;
     }
 }
