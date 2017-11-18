@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Patch : MonoBehaviour
 {
-
-    [SerializeField] private WorldSystem m_world;
+    public WorldSystem world;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            m_world.QueueSwitch(WorldSystem.WorldSwitch.Friendly);
+            world.QueueSwitch(WorldSystem.WorldSwitch.Friendly);
             //m_world.EnterFriendlyWorld();
             Destroy(gameObject);
         }

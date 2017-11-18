@@ -73,6 +73,7 @@ public class WorldSystem : MonoBehaviour
         camera.transform.position -= m_worldOffset;
     }
 
+    // Warum gequeued? Wegen physiks sprung?
     public void QueueSwitch(WorldSwitch worldSwitch)
     {
         m_queuedSwitch = worldSwitch;
