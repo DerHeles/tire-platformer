@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     
     private Transform groundCheck;          // A position marking where to check if the player is grounded.
     private bool grounded = false;          // Whether or not the player is grounded.
-    //private Animator anim;                  // Reference to the player's animator component.
+    //private Animator anim;                  // Reference to the player's m_animator component.
 
     private Rigidbody2D m_body;
 
@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour
     private float m_damageTime = 0.25f;
     private SpriteRenderer m_spriteRenderer;
 
+    private Animator m_animator;
+
     void Awake()
     {
         // Setting up references.
@@ -47,6 +49,8 @@ public class PlayerController : MonoBehaviour
         m_body = GetComponent<Rigidbody2D>();
         //Debug.Log("Drag=" + m_body.drag);
         m_spriteRenderer = GetComponent<SpriteRenderer>();
+
+        m_animator = GetComponent<Animator>();
     }
 
 
@@ -76,18 +80,25 @@ public class PlayerController : MonoBehaviour
         // Cache the horizontal input.
         float h = Input.GetAxisRaw("Horizontal");
 
+        if(h == 0)
+            m_animator.SetBool("Idle", true);
+        else
+            m_animator.SetBool("Idle", false);
+
         if (grounded && h == 0.0f)
         {
             //GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             //Debug.Log("BREMSEN");
             m_body.drag = m_movementDrag;
+
+            //m_animator.SetBool("Idle", true);
         }
         else
         {
             m_body.drag = 0.0f;
         }
 
-        // The Speed animator parameter is set to the absolute value of the horizontal input.
+        // The Speed m_animator parameter is set to the absolute value of the horizontal input.
         //anim.SetFloat("Speed", Mathf.Abs(h));
 
         // If the player is changing direction (h has a different sign to velocity.x) or hasn't reached maxSpeed yet...
@@ -126,7 +137,7 @@ public class PlayerController : MonoBehaviour
         // If the player should jump...
         if (jump)
         {
-            // Set the Jump animator trigger parameter.
+            // Set the Jump m_animator trigger parameter.
             //anim.SetTrigger("Jump");
             
             //AudioSource.PlayClipAtPoint(jumpClips[i], transform.position);
