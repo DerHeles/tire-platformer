@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -226,5 +227,12 @@ public class PlayerController : MonoBehaviour
     {
         m_hasKey = true;
         keyImage.sprite = keySprite;
+    }
+
+    public void PickupPatch()
+    {
+        m_hitpoints++;
+        m_hitpoints = Math.Min(m_hitpoints, 3);
+        ShowCurrentLifeStatus();
     }
 }

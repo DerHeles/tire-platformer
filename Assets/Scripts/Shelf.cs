@@ -20,9 +20,9 @@ public class Shelf : MonoBehaviour
 	    if (Input.GetKeyDown(KeyCode.O))
 	    {
 	        arm.isKinematic = false;
-	        arm.AddForce(Vector2.left * 4f, ForceMode2D.Impulse);
+	        arm.AddForce(Vector2.left * 6f, ForceMode2D.Impulse);
 	        //vase.AddForce(Vector2.left * 2f, ForceMode2D.Impulse);
-	        vase.AddForceAtPosition(Vector2.left * 2f, vase.position + new Vector2(0.1f, 0.8f), ForceMode2D.Impulse);
+	        //vase.AddForceAtPosition(Vector2.left * 2f, vase.position + new Vector2(0.1f, 0.8f), ForceMode2D.Impulse);
 	        Debug.Log("DROP");
 	        triggered = true;
         }

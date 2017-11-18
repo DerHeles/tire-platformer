@@ -10,6 +10,11 @@ public class Patch : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            var player = other.GetComponent<PlayerController>();
+            if (player)
+            {
+                player.PickupPatch();
+            }
             world.QueueSwitch(WorldSystem.WorldSwitch.Friendly);
             //m_world.EnterFriendlyWorld();
             Destroy(gameObject);
