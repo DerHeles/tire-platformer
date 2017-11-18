@@ -33,7 +33,7 @@ public class Spikes : MonoBehaviour
             var player = other.GetComponent<PlayerController>();
             if (player)
             {
-                player.ReceiveDamage();
+                //player.ReceiveDamage();
                 triggered = true;
 
                 var sprite = GetComponent<SpriteRenderer>();

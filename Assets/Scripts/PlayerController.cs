@@ -177,9 +177,10 @@ public class PlayerController : MonoBehaviour
         facingRight = !facingRight;
 
         // Multiply the player's x local scale by -1.
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
+        //Vector3 theScale = transform.localScale;
+        //theScale.x *= -1;
+        //transform.localScale = theScale;
+        GetComponent<SpriteRenderer>().flipX = !facingRight; // Potential fix for platform glitch
     }
 
     public void ReceiveDamage()

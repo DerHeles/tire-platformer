@@ -14,6 +14,8 @@ public class GhostSpawn : MonoBehaviour
     private bool currentlyChecking;
     private bool triggered;
 
+    //private bool
+
     // Use this for initialization
 	void Start () {
 		
@@ -26,7 +28,12 @@ public class GhostSpawn : MonoBehaviour
 	        return;
 	    if (currentlyChecking)
 	    {
-	        
+	        timeLeft -= Time.deltaTime;
+	        if (timeLeft <= 0.0f)
+	        {
+	            currentlyChecking = false;
+	            currentTimesTriggered = 0;
+	        }
 	    }
 	}
 
@@ -35,9 +42,26 @@ public class GhostSpawn : MonoBehaviour
         if (triggered)
             return;
 
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("TV"))
         {
-            
+            // TO DO   
+
+            if (currentlyChecking)
+            {
+                currentTimesTriggered++;
+                if (currentTimesTriggered >= minTimesTriggered)
+                {
+                    // SPAWN GHOST
+                    Debug.Log("GHOST");
+                    triggered = true;
+                }
+            }
+            else
+            {
+                currentlyChecking = true;
+                currentTimesTriggered = 1;
+                timeLeft = timeWindow;
+            }
         }
     }
 }
