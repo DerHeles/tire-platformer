@@ -16,12 +16,14 @@ public class PlayerController : MonoBehaviour
     public bool jump = false;               // Condition for whether the player should jump.
 
 
-    public float moveForce = 365f;          // Amount of force added to move the player left and right.
+    public float moveForce = 10f;          // Amount of force added to move the player left and right.
     public float maxSpeed = 5f;             // The fastest the player can travel in the x axis.
     public float jumpForce = 1000f;         // Amount of force added when the player jumps.
-
+    public float airMoveForce = 5f;
     
     private Transform groundCheck;          // A position marking where to check if the player is grounded.
+    private Transform groundCheck2;
+    [SerializeField]
     private bool grounded = false;          // Whether or not the player is grounded.
     //private Animator anim;                  // Reference to the player's m_animator component.
 
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour
     {
         // Setting up references.
         groundCheck = transform.Find("groundCheck");
+        groundCheck2 = transform.Find("groundCheck2");
         //anim = GetComponent<Animator>();
         m_body = GetComponent<Rigidbody2D>();
         //Debug.Log("Drag=" + m_body.drag);
@@ -57,7 +60,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
-        grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+        grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"))
+            || Physics2D.Linecast(transform.position, groundCheck2.position, 1 << LayerMask.NameToLayer("Ground"));
 
         // If the jump button is pressed and the player is grounded then the player should jump.
         if (Input.GetButtonDown("Jump") && grounded)
@@ -112,8 +116,15 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                // ... add a force to the player.
-                GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * moveForce);
+                if (grounded)
+                {
+                    // ... add a force to the player.
+                    GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * moveForce);
+                }
+                else
+                {
+                    GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * airMoveForce);
+                }
             }
         }
             
