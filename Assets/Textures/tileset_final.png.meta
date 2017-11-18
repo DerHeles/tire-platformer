@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 3de13d8dd176a1b4aa778e5810e64960
-timeCreated: 1511006736
+guid: fc9a73d187bfe3a4a97e754b26867243
+timeCreated: 1511007212
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: player_tileset_small_flipped_0
-    21300002: player_tileset_small_flipped_1
-    21300004: player_tileset_small_flipped_2
-    21300006: player_tileset_small_flipped_3
-    21300008: player_tileset_small_flipped_4
-    21300010: player_tileset_small_flipped_5
-    21300012: player_tileset_small_flipped_6
+    21300000: tileset_final_0
+    21300002: tileset_final_1
+    21300004: tileset_final_2
+    21300006: tileset_final_3
+    21300008: tileset_final_4
+    21300010: tileset_final_5
+    21300012: tileset_final_6
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -85,7 +85,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_tileset_small_flipped_0
+      name: tileset_final_0
       rect:
         serializedVersion: 2
         x: 0
@@ -99,7 +99,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: player_tileset_small_flipped_1
+      name: tileset_final_1
       rect:
         serializedVersion: 2
         x: 200
@@ -113,7 +113,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: player_tileset_small_flipped_2
+      name: tileset_final_2
       rect:
         serializedVersion: 2
         x: 400
@@ -127,7 +127,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: player_tileset_small_flipped_3
+      name: tileset_final_3
       rect:
         serializedVersion: 2
         x: 600
@@ -141,21 +141,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: player_tileset_small_flipped_4
-      rect:
-        serializedVersion: 2
-        x: 800
-        y: 200
-        width: 200
-        height: 200
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: player_tileset_small_flipped_5
+      name: tileset_final_4
       rect:
         serializedVersion: 2
         x: 0
@@ -169,10 +155,24 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: player_tileset_small_flipped_6
+      name: tileset_final_5
       rect:
         serializedVersion: 2
         x: 200
+        y: 0
+        width: 200
+        height: 200
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: tileset_final_6
+      rect:
+        serializedVersion: 2
+        x: 400
         y: 0
         width: 200
         height: 200
