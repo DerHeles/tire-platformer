@@ -29,7 +29,7 @@ public class BedTrampoline : MonoBehaviour {
         var player = other.gameObject.GetComponent<PlayerController>();
         if (player)
         {
-            player.jumpForce = 350.0f;
+            player.jumpForce = 320.0f;
             player.airMoveForce = 5.0f;
         }
     }
