@@ -80,10 +80,8 @@ public class PlayerController : MonoBehaviour
         // Cache the horizontal input.
         float h = Input.GetAxisRaw("Horizontal");
 
-        if(h == 0)
-            m_animator.SetBool("Idle", true);
-        else
-            m_animator.SetBool("Idle", false);
+        // If no horizontal input --> idle
+        m_animator.SetBool("Idle", h == 0);
 
         if (grounded && h == 0.0f)
         {
