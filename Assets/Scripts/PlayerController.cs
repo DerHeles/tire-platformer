@@ -93,7 +93,9 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");
 
         // If no horizontal input --> idle
-        m_animator.SetBool("Idle", h == 0);
+        //m_animator.SetBool("Idle", h == 0);
+        m_animator.speed = (h == 0) ? 0.0f : 1.0f;
+        
 
         if (grounded && h == 0.0f)
         {
