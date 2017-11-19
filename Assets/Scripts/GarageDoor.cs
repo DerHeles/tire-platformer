@@ -5,6 +5,7 @@ using UnityEngine;
 public class GarageDoor : MonoBehaviour
 {
     private GameObject parent;
+    public BrokenGlass glass;
 
 	// Use this for initialization
 	void Start ()
@@ -22,12 +23,24 @@ public class GarageDoor : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             var player = other.gameObject.GetComponent<PlayerController>();
-            if (player && player.HasKey())
+            if (player)
             {
-                player.UseKey();
-                // Open Door
-                //gameObject.SetActive(false);
-                parent.SetActive(false);
+                if (player.HasKey())
+                {
+                    player.UseKey();
+                    // Open Door
+                    //gameObject.SetActive(false);
+                    parent.SetActive(false);
+                }
+                else
+                {
+                    // NO KEY
+                    //Debug.Log(player.GetComponent<Rigidbody2D>().velocity.x);
+                    if (Mathf.Abs(player.GetComponent<Rigidbody2D>().velocity.x) > 5.0f)
+                    {
+                        glass.Break();
+                    }
+                }
             }
         }
     }
