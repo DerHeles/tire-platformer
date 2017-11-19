@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite keySprite;
     [SerializeField] private Sprite keySpriteInvisible;
 
+    private bool m_finished = false;
+
 
     void Awake()
     {
@@ -68,13 +70,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
-        grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"))
-            || Physics2D.Linecast(transform.position, groundCheck2.position, 1 << LayerMask.NameToLayer("Ground"));
-
-        // If the jump button is pressed and the player is grounded then the player should jump.
-        if (Input.GetButtonDown("Jump") && grounded)
-            jump = true;
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            DieAndCry();    
+        }
 
         if (m_currentDamageTime > 0.0f)
         {
@@ -85,11 +84,27 @@ public class PlayerController : MonoBehaviour
                 m_spriteRenderer.color = Color.white;
             }
         }
+
+        if (m_finished)
+            return;
+
+        // The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
+        grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"))
+            || Physics2D.Linecast(transform.position, groundCheck2.position, 1 << LayerMask.NameToLayer("Ground"));
+
+        // If the jump button is pressed and the player is grounded then the player should jump.
+        if (Input.GetButtonDown("Jump") && grounded)
+            jump = true;
+
+        
     }
 
 
     void FixedUpdate()
     {
+        if (m_finished)
+            return;
+
         // Cache the horizontal input.
         float h = Input.GetAxisRaw("Horizontal");
 
@@ -195,6 +210,8 @@ public class PlayerController : MonoBehaviour
             if (m_hitpoints == 0)
             {
                 Debug.Log("DEAD");
+                DieAndCry();
+                
             }
         }
         Debug.Log("DAMAGE");
@@ -235,5 +252,15 @@ public class PlayerController : MonoBehaviour
         m_hitpoints++;
         m_hitpoints = Math.Min(m_hitpoints, 3);
         ShowCurrentLifeStatus();
+    }
+
+    public void DieAndCry()
+    {
+        m_finished = true;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        m_animator.speed = 0f;
+
+        // other animation
+        // TO DO
     }
 }

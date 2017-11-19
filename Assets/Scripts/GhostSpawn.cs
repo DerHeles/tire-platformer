@@ -14,6 +14,11 @@ public class GhostSpawn : MonoBehaviour
     private bool currentlyChecking;
     private bool triggered;
 
+    public Ghost ghost;
+    public SpriteRenderer tv;
+    public Sprite brokenTVSprite;
+    public GameObject patch;
+
     //private bool
 
     // Use this for initialization
@@ -54,6 +59,9 @@ public class GhostSpawn : MonoBehaviour
                     // SPAWN GHOST
                     Debug.Log("GHOST");
                     triggered = true;
+                    ghost.Fly();
+                    tv.sprite = brokenTVSprite;
+                    patch.SetActive(true);
                 }
             }
             else
