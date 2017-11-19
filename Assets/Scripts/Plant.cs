@@ -10,8 +10,9 @@ public class Plant : MonoBehaviour
     public Animator anim;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
+	    anim.speed = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -22,6 +23,7 @@ public class Plant : MonoBehaviour
     public void Grow()
     {
         m_grown = true;
-        transform.localScale = new Vector3(1, 1, 1);
+        //transform.localScale = new Vector3(1, 1, 1);
+        anim.speed = 0.4f;
     }
 }
