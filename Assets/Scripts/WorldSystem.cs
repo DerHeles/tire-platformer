@@ -15,7 +15,7 @@ public class WorldSystem : MonoBehaviour
     [SerializeField] private Transform worldFriendly;
 
     private Vector3 m_worldOffset;
-    private bool m_inEvilWorld = true;
+    private bool m_inEvilWorld = false;
 
     [SerializeField] private Rigidbody2D player;
     [SerializeField] private CameraFollow camera;
@@ -62,6 +62,7 @@ public class WorldSystem : MonoBehaviour
         m_inEvilWorld = false;
         //camera.WorldSwitchCameraReset();
         camera.transform.position += m_worldOffset;
+        player.GetComponent<Animator>().SetBool("evil", false);
     }
 
     public void EnterEvilWorld()
@@ -71,6 +72,7 @@ public class WorldSystem : MonoBehaviour
         m_inEvilWorld = true;
         //camera.WorldSwitchCameraReset();
         camera.transform.position -= m_worldOffset;
+        player.GetComponent<Animator>().SetBool("evil", true);
     }
 
     // Warum gequeued? Wegen physiks sprung?

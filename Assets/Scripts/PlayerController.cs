@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
 
     private bool m_finished = false;
 
+    public AnimationClip deadAnimation;
 
     void Awake()
     {
@@ -70,6 +71,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            GetComponent<Rigidbody2D>().AddForce(Vector2.up * 3.0f, ForceMode2D.Impulse);
+        }
         if (Input.GetKeyDown(KeyCode.L))
         {
             DieAndCry();    
@@ -249,8 +254,8 @@ public class PlayerController : MonoBehaviour
 
     public void PickupPatch()
     {
-        m_hitpoints++;
-        m_hitpoints = Math.Min(m_hitpoints, 3);
+        //m_hitpoints++;
+        //m_hitpoints = Math.Min(m_hitpoints, 3);
         ShowCurrentLifeStatus();
     }
 
@@ -258,9 +263,14 @@ public class PlayerController : MonoBehaviour
     {
         m_finished = true;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        m_animator.speed = 0f;
+        //m_animator.speed = 0f;
 
         // other animation
         // TO DO
+        //m_animator.Play();
+        m_animator.SetTrigger("Dead");
+        m_animator.speed = 0.5f;
+
+        Debug.Log("TOT");
     }
 }

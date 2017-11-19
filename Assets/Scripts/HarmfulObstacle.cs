@@ -6,6 +6,8 @@ public class HarmfulObstacle : MonoBehaviour {
 
     [SerializeField] private WorldSystem m_world;
 
+    public bool isPuddle;
+
     // Use this for initialization
     void Start () {
 		
@@ -25,7 +27,8 @@ public class HarmfulObstacle : MonoBehaviour {
             m_world.QueueSwitch(WorldSystem.WorldSwitch.Evil);
 
             Debug.Log("SCHADEN");
-            Destroy(gameObject);
+            if(!isPuddle)
+                Destroy(gameObject);
         }
     }
 }
