@@ -22,11 +22,14 @@ public class WorldSystem : MonoBehaviour
 
     private bool m_switchQueued = false;
 
+    private AudioSource audioSwitch;
+
     // Use this for initialization
     void Start ()
     {
         //m_worldOffset = worldEvil.position - worldFriendly.position;
         m_worldOffset = worldFriendly.position - worldEvil.position;
+        audioSwitch = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -63,6 +66,7 @@ public class WorldSystem : MonoBehaviour
         //camera.WorldSwitchCameraReset();
         camera.transform.position += m_worldOffset;
         player.GetComponent<Animator>().SetBool("evil", false);
+        audioSwitch.Play();
     }
 
     public void EnterEvilWorld()
@@ -73,6 +77,7 @@ public class WorldSystem : MonoBehaviour
         //camera.WorldSwitchCameraReset();
         camera.transform.position -= m_worldOffset;
         player.GetComponent<Animator>().SetBool("evil", true);
+        audioSwitch.Play();
     }
 
     // Warum gequeued? Wegen physiks sprung?
