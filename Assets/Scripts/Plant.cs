@@ -9,10 +9,13 @@ public class Plant : MonoBehaviour
     public Sprite grownSprite;
     public Animator anim;
 
+    private BoxCollider2D collider;
+
 	// Use this for initialization
 	void Start ()
 	{
 	    anim.speed = 0.0f;
+	    collider = GetComponent<BoxCollider2D>();
 	}
 	
 	// Update is called once per frame
@@ -25,5 +28,6 @@ public class Plant : MonoBehaviour
         m_grown = true;
         //transform.localScale = new Vector3(1, 1, 1);
         anim.speed = 0.4f;
+        collider.enabled = true;
     }
 }
