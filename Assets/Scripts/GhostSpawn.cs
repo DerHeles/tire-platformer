@@ -19,6 +19,9 @@ public class GhostSpawn : MonoBehaviour
     public Sprite brokenTVSprite;
     public GameObject patch;
 
+    public SpriteRenderer friendlyTV;
+    public Sprite friendlyTVSprite;
+
     //private bool
 
     // Use this for initialization
@@ -61,6 +64,7 @@ public class GhostSpawn : MonoBehaviour
                     triggered = true;
                     ghost.Fly();
                     tv.sprite = brokenTVSprite;
+                    friendlyTV.sprite = friendlyTVSprite;
                     patch.SetActive(true);
                 }
             }

@@ -55,6 +55,12 @@ public class PlayerController : MonoBehaviour
 
     public AnimationClip deadAnimation;
 
+    private bool controllable;
+    public Image[] cinematicBars;
+    public GameObject thoughtBubble;
+    public GameObject thoughtBubbleGarage;
+    public GameObject thoughtBubbleKey;
+
     void Awake()
     {
         // Setting up references.
@@ -68,6 +74,10 @@ public class PlayerController : MonoBehaviour
         m_animator = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        StartCoroutine("StartAnimation");
+    }
 
     void Update()
     {
@@ -112,6 +122,9 @@ public class PlayerController : MonoBehaviour
 
         // Cache the horizontal input.
         float h = Input.GetAxisRaw("Horizontal");
+
+        if (!controllable)
+            h = 0f;
 
         // If no horizontal input --> idle
         //m_animator.SetBool("Idle", h == 0);
@@ -175,7 +188,7 @@ public class PlayerController : MonoBehaviour
             Flip();
 
         // If the player should jump...
-        if (jump)
+        if (jump && controllable)
         {
             // Set the Jump m_animator trigger parameter.
             //anim.SetTrigger("Jump");
@@ -272,5 +285,57 @@ public class PlayerController : MonoBehaviour
         m_animator.speed = 0.5f;
 
         Debug.Log("TOT");
+    }
+
+    public IEnumerator StartAnimation()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        // Bubble
+        thoughtBubble.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        thoughtBubble.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+        Flip();
+        yield return new WaitForSeconds(0.5f);
+
+        // Garage Bubble
+        thoughtBubbleGarage.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 0.4f * jumpForce));
+        yield return new WaitForSeconds(1.0f);
+        thoughtBubbleGarage.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
+
+        controllable = true;
+        foreach (var c in cinematicBars)
+        {
+            c.enabled = false;
+        }
+    }
+
+    public void ShowKeyBubble()
+    {
+        StartCoroutine("KeyBubbleAnimation");
+    }
+
+    public IEnumerator KeyBubbleAnimation()
+    {
+        controllable = false;
+        foreach (var c in cinematicBars)
+        {
+            c.enabled = true;
+        }
+        yield return new WaitForSeconds(0.5f);
+        thoughtBubbleKey.SetActive(true);
+        
+        yield return new WaitForSeconds(2.0f);
+        thoughtBubbleKey.SetActive(false);
+
+        controllable = true;
+        foreach (var c in cinematicBars)
+        {
+            c.enabled = false;
+        }
     }
 }

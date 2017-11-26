@@ -37,7 +37,8 @@ public class BrokenGlass : MonoBehaviour {
                 m_world.QueueSwitch(WorldSystem.WorldSwitch.Evil);
 
                 Debug.Log("GLASS");
-                Destroy(gameObject);
+                gameObject.SetActive(false);
+                //Destroy(gameObject);
             }
         }
     }

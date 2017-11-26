@@ -7,6 +7,8 @@ public class GarageDoor : MonoBehaviour
     private GameObject parent;
     public BrokenGlass glass;
 
+    private bool showThoughtBubble = true;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -39,6 +41,11 @@ public class GarageDoor : MonoBehaviour
                     if (Mathf.Abs(player.GetComponent<Rigidbody2D>().velocity.x) > 5.0f)
                     {
                         glass.Break();
+                    }
+                    if (showThoughtBubble)
+                    {
+                        showThoughtBubble = false;
+                        player.ShowKeyBubble();
                     }
                 }
             }
