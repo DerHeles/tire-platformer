@@ -8,11 +8,14 @@ public class Skeleton : MonoBehaviour
     public Transform spawnLocation;
     public WorldSystem world;
     public GameObject arm;
+    private AudioManager m_audioManager;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+    // Use this for initialization
+    void Start ()
+    {
+        m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -34,6 +37,7 @@ public class Skeleton : MonoBehaviour
             //other.gameObject.transform.localPosition = Vector3.zero;
             GameObject patch = Instantiate(patchPrefab, spawnLocation.position, Quaternion.identity);
             patch.GetComponent<Patch>().world = world;
+            m_audioManager.PlaySound(AudioManager.SoundID.OpenShelf);
             Debug.Log("Arm");
         }
     }

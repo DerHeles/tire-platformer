@@ -8,12 +8,14 @@ public class GarageDoor : MonoBehaviour
     public BrokenGlass glass;
 
     private bool showThoughtBubble = true;
+    private AudioManager m_audioManager;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
 	{
 	    parent = transform.parent.gameObject;
-	}
+	    m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -30,6 +32,7 @@ public class GarageDoor : MonoBehaviour
                 if (player.HasKey())
                 {
                     player.UseKey();
+                    m_audioManager.PlaySound(AudioManager.SoundID.DoorOpened);
                     // Open Door
                     //gameObject.SetActive(false);
                     parent.SetActive(false);
@@ -41,6 +44,7 @@ public class GarageDoor : MonoBehaviour
                     if (Mathf.Abs(player.GetComponent<Rigidbody2D>().velocity.x) > 5.0f)
                     {
                         glass.Break();
+                        m_audioManager.PlaySound(AudioManager.SoundID.DoorRammed);
                     }
                     if (showThoughtBubble)
                     {

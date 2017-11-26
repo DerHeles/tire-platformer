@@ -8,12 +8,14 @@ public class Bottle : MonoBehaviour
     public Plant plant;
 
     private bool triggered;
+    private AudioManager m_audioManager;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
 	{
 	    anim.speed = 0.0f;
-	}
+	    m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -35,14 +37,16 @@ public class Bottle : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (triggered)
+            return;
         if (other.gameObject.CompareTag("Player"))
         {
             var player = other.gameObject.GetComponent<PlayerController>();
             //player.ReceiveDamage();
             //anim.SetTrigger("TouchBottle");
-            anim.speed = 0.4f;
+            anim.speed = 0.6f;
             Debug.Log("BOTTLE");
-
+            m_audioManager.PlaySound(AudioManager.SoundID.Bottle);
         }
     }
 }

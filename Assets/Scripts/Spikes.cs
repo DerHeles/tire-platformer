@@ -13,10 +13,12 @@ public class Spikes : MonoBehaviour
     [SerializeField] private Transform spawnLocation;
     [SerializeField] private WorldSystem m_world;
 
+    private AudioManager m_audioManager;
+
 	// Use this for initialization
 	void Start () {
-		
-	}
+	    m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -43,13 +45,8 @@ public class Spikes : MonoBehaviour
                     GameObject patch = Instantiate(patchPrefab, spawnLocation.position, Quaternion.identity);
                     patch.GetComponent<Patch>().world = m_world;
                 }
+                m_audioManager.PlaySound(AudioManager.SoundID.Spikes);
             }
         }
-    }
-
-
-    private void OnDrawGizmos()
-    {
-        //Gizmos.DrawIcon(transform.position, "Light Gizmo.tiff", true);
     }
 }

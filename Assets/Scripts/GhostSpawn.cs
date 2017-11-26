@@ -21,13 +21,15 @@ public class GhostSpawn : MonoBehaviour
 
     public SpriteRenderer friendlyTV;
     public Sprite friendlyTVSprite;
+    private AudioManager m_audioManager;
 
     //private bool
 
     // Use this for initialization
-	void Start () {
-		
-	}
+    void Start () {
+
+        m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -66,6 +68,9 @@ public class GhostSpawn : MonoBehaviour
                     tv.sprite = brokenTVSprite;
                     friendlyTV.sprite = friendlyTVSprite;
                     patch.SetActive(true);
+
+                    m_audioManager.PlaySound(AudioManager.SoundID.BrokenTV);
+                    m_audioManager.PlaySound(AudioManager.SoundID.FireGhost);
                 }
             }
             else

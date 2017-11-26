@@ -11,12 +11,15 @@ public class Plant : MonoBehaviour
 
     private BoxCollider2D collider;
 
-	// Use this for initialization
-	void Start ()
+    private AudioManager m_audioManager;
+
+    // Use this for initialization
+    void Start ()
 	{
 	    anim.speed = 0.0f;
 	    collider = GetComponent<BoxCollider2D>();
-	}
+	    m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -29,5 +32,6 @@ public class Plant : MonoBehaviour
         //transform.localScale = new Vector3(1, 1, 1);
         anim.speed = 0.4f;
         collider.enabled = true;
+        m_audioManager.PlaySound(AudioManager.SoundID.PlantGrown);
     }
 }

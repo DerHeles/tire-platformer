@@ -21,15 +21,17 @@ public class WorldSystem : MonoBehaviour
     [SerializeField] private CameraFollow camera;
 
     private bool m_switchQueued = false;
+    
 
-    private AudioSource audioSwitch;
+    private AudioManager m_audioManager;
 
     // Use this for initialization
     void Start ()
     {
         //m_worldOffset = worldEvil.position - worldFriendly.position;
         m_worldOffset = worldFriendly.position - worldEvil.position;
-        audioSwitch = GetComponent<AudioSource>();
+
+        m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     private void Update()
@@ -66,7 +68,10 @@ public class WorldSystem : MonoBehaviour
         //camera.WorldSwitchCameraReset();
         camera.transform.position += m_worldOffset;
         player.GetComponent<Animator>().SetBool("evil", false);
-        audioSwitch.Play();
+
+        m_audioManager.PlaySound(AudioManager.SoundID.PickupPatch);
+        m_audioManager.PlayMusic(AudioManager.MusicID.Friendly);
+
     }
 
     public void EnterEvilWorld()
@@ -77,7 +82,9 @@ public class WorldSystem : MonoBehaviour
         //camera.WorldSwitchCameraReset();
         camera.transform.position -= m_worldOffset;
         player.GetComponent<Animator>().SetBool("evil", true);
-        audioSwitch.Play();
+
+        m_audioManager.PlaySound(AudioManager.SoundID.LosePatch);
+        m_audioManager.PlayMusic(AudioManager.MusicID.Evil);
     }
 
     // Warum gequeued? Wegen physiks sprung?

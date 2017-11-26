@@ -61,6 +61,8 @@ public class PlayerController : MonoBehaviour
     public GameObject thoughtBubbleGarage;
     public GameObject thoughtBubbleKey;
 
+    private AudioManager m_audioManager;
+
     void Awake()
     {
         // Setting up references.
@@ -72,11 +74,14 @@ public class PlayerController : MonoBehaviour
         m_spriteRenderer = GetComponent<SpriteRenderer>();
 
         m_animator = GetComponent<Animator>();
+
+        m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     private void Start()
     {
-        StartCoroutine("StartAnimation");
+        //StartCoroutine("StartAnimation");
+        controllable = true;
     }
 
     void Update()
@@ -194,6 +199,7 @@ public class PlayerController : MonoBehaviour
             //anim.SetTrigger("Jump");
             
             //AudioSource.PlayClipAtPoint(jumpClips[i], transform.position);
+            m_audioManager.PlaySound(AudioManager.SoundID.Jump);
 
             // Add a vertical force to the player.
             GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpForce));
@@ -263,6 +269,7 @@ public class PlayerController : MonoBehaviour
     {
         m_hasKey = true;
         keyImage.sprite = keySprite;
+        m_audioManager.PlaySound(AudioManager.SoundID.PickupKey);
     }
 
     public void PickupPatch()
@@ -284,6 +291,9 @@ public class PlayerController : MonoBehaviour
         m_animator.SetTrigger("Dead");
         m_animator.speed = 0.5f;
 
+        m_audioManager.PlaySound(AudioManager.SoundID.Dead);
+        m_audioManager.PlayMusic(AudioManager.MusicID.End);
+
         Debug.Log("TOT");
     }
 
@@ -292,6 +302,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         // Bubble
+        m_audioManager.PlaySound(AudioManager.SoundID.Bubble);
         thoughtBubble.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         thoughtBubble.SetActive(false);
@@ -300,6 +311,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         // Garage Bubble
+        m_audioManager.PlaySound(AudioManager.SoundID.Bubble);
         thoughtBubbleGarage.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 0.4f * jumpForce));
@@ -327,6 +339,7 @@ public class PlayerController : MonoBehaviour
             c.enabled = true;
         }
         yield return new WaitForSeconds(0.5f);
+        m_audioManager.PlaySound(AudioManager.SoundID.Bubble);
         thoughtBubbleKey.SetActive(true);
         
         yield return new WaitForSeconds(2.0f);
