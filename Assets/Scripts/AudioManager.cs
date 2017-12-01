@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource musicFriendly;
     [SerializeField] AudioSource musicEvil;
     [SerializeField] AudioSource musicEnd;
+
+    [SerializeField] private AudioMixerGroup mixerMusic;
+    [SerializeField] private AudioMixerGroup mixerSFX;
 
     public enum SoundID
     {
@@ -74,6 +78,13 @@ public class AudioManager : MonoBehaviour
         //musicEvil.loop = true;
         //musicEvil.Play();
 
+        foreach (var source in sources)
+        {
+            source.Value.outputAudioMixerGroup = mixerSFX;
+        }
+
+        // For loading scene from menu
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void PlaySound(SoundID id)
