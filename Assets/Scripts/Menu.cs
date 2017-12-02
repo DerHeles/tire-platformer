@@ -14,9 +14,14 @@ public class Menu : MonoBehaviour
     [SerializeField] private Dropdown resDropdown;
     [SerializeField] private Dropdown resDropdownPause;
     [SerializeField] private Toggle fullscreenToggle;
+    [SerializeField] private Toggle fullscreenTogglePause;
     [SerializeField] private GameObject menuBackground;
     [SerializeField] private GameObject gameEndPanel;
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private Slider musicSliderOptions;
+    [SerializeField] private Slider musicSliderPause;
+    [SerializeField] private Slider sfxSliderOptions;
+    [SerializeField] private Slider sfxSliderPause;
 
     private AudioManager audioManager;
 
@@ -38,6 +43,10 @@ public class Menu : MonoBehaviour
         fullscreenToggle.onValueChanged.AddListener(OnFullscreenToggle);
 
         fullscreenToggle.isOn = Screen.fullScreen;
+
+        fullscreenTogglePause.onValueChanged.AddListener(OnFullscreenToggle);
+
+        fullscreenTogglePause.isOn = Screen.fullScreen;
 
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         audioManager.PlayMenuMusic();
@@ -73,12 +82,18 @@ public class Menu : MonoBehaviour
     {
         //Debug.Log("Music Volume = " + volume);
         audioManager.SetMusicVolume(volume);
+
+        musicSliderOptions.value = volume;
+        musicSliderPause.value = volume;
     }
 
     public void SetSfxVolume(float volume)
     {
         //Debug.Log("SFX Volume = " + volume);
         audioManager.SetSfxVolume(volume);
+
+        sfxSliderOptions.value = volume;
+        sfxSliderPause.value = volume;
     }
 
     public void QuitGame()
@@ -94,6 +109,8 @@ public class Menu : MonoBehaviour
 
     public void OpenOptionsMenu()
     {
+        fullscreenToggle.isOn = Screen.fullScreen;
+
         mainPanel.SetActive(false);
         optionsPanel.SetActive(true);
 
@@ -135,6 +152,8 @@ public class Menu : MonoBehaviour
 
     public void OpenPauseMenu()
     {
+        fullscreenTogglePause.isOn = Screen.fullScreen;
+
         pausePanel.SetActive(true);
 
         Resolution[] resolutions = Screen.resolutions;

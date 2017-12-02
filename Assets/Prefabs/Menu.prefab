@@ -2893,7 +2893,7 @@ MonoBehaviour:
   m_MinValue: -70
   m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -2985,7 +2985,7 @@ MonoBehaviour:
   m_MinValue: -70
   m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -3666,9 +3666,14 @@ MonoBehaviour:
   resDropdown: {fileID: 114793160673669506}
   resDropdownPause: {fileID: 114775534720778710}
   fullscreenToggle: {fileID: 114112694012525580}
+  fullscreenTogglePause: {fileID: 114780748330363062}
   menuBackground: {fileID: 1435983190243714}
   gameEndPanel: {fileID: 1266032131624136}
   gameOverPanel: {fileID: 1246489191071334}
+  musicSliderOptions: {fileID: 114223658871557700}
+  musicSliderPause: {fileID: 114448713935137728}
+  sfxSliderOptions: {fileID: 114998676286244532}
+  sfxSliderPause: {fileID: 114256540370374750}
 --- !u!114 &114423469943147988
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3765,7 +3770,7 @@ MonoBehaviour:
   m_MinValue: -70
   m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -6078,7 +6083,7 @@ MonoBehaviour:
   m_MinValue: -70
   m_MaxValue: 5
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:

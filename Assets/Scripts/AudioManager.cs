@@ -122,13 +122,13 @@ public class AudioManager : MonoBehaviour
 
     public void SetMusicVolume(float volume)
     {
-        Debug.Log("Music Volume = " + volume);
+        //Debug.Log("Music Volume = " + volume);
         mixerMusic.audioMixer.SetFloat("musicVolume", volume);
     }
 
     public void SetSfxVolume(float volume)
     {
-        Debug.Log("SFX Volume = " + volume);
+        //Debug.Log("SFX Volume = " + volume);
         mixerMusic.audioMixer.SetFloat("sfxVolume", volume);
     }
 

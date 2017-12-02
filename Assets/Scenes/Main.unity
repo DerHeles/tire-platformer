@@ -7753,6 +7753,52 @@ MonoBehaviour:
     type: 2}
   spawnLocation: {fileID: 1123816746}
   m_world: {fileID: 1434742912}
+--- !u!1001 &962101538
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4489746429112582, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -88.19281
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489746429112582, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -6.3968196
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489746429112582, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.2265625
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489746429112582, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489746429112582, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489746429112582, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489746429112582, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4489746429112582, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370465298059326, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_Name
+      value: AudioManager Debug
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &968600594
 GameObject:
   m_ObjectHideFlags: 0
