@@ -26,7 +26,7 @@ public class EndTrigger : MonoBehaviour
             var player = other.gameObject.GetComponent<PlayerController>();
             if (player)
             {
-                player.DieAndCry();
+                player.FinishGame();
             }
         }
     }

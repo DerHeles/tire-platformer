@@ -18,43 +18,19 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject gameEndPanel;
     [SerializeField] private GameObject gameOverPanel;
 
+    private AudioManager audioManager;
+
+    private PlayerController player;
+
+    public void SetPlayer(PlayerController player)
+    {
+        this.player = player;
+    }
+
     // Use this for initialization
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-
-        //Resolution[] resolutions = Screen.resolutions;
-
-        //resDropdown.options.Clear();
-        //int i = 0;
-        //foreach (var res in resolutions)
-        //{
-        //    string text = "";
-        //    if (res.width.ToString().Length == 3)
-        //        text += "  ";
-        //    text += res.width.ToString();
-
-        //    text += " x ";
-        //    if (res.height.ToString().Length == 3)
-        //        text += "  ";
-        //    text += res.height.ToString();
-
-        //    text += " @ " + res.refreshRate + "Hz";
-
-        //    resDropdown.options.Add(new Dropdown.OptionData(text));
-
-        //    if (Screen.width == res.width && Screen.height == res.height &&
-        //        Screen.currentResolution.refreshRate == res.refreshRate)
-        //    {
-        //        resDropdown.value = i;
-        //        resDropdown.Select();
-        //    }
-        //    i++;
-        //}
-
-
-        //resDropdown.Show();
-        //resDropdown.captionText.text = resDropdown.options[0].text;
 
         resDropdown.onValueChanged.AddListener(OnResolutionChanged);
         resDropdownPause.onValueChanged.AddListener(OnResolutionChanged);
@@ -62,6 +38,9 @@ public class Menu : MonoBehaviour
         fullscreenToggle.onValueChanged.AddListener(OnFullscreenToggle);
 
         fullscreenToggle.isOn = Screen.fullScreen;
+
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        audioManager.PlayMenuMusic();
     }
 
     public void OnFullscreenToggle(bool isOn)
@@ -83,20 +62,23 @@ public class Menu : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("Main");
         mainPanel.SetActive(false);
-        
         menuBackground.SetActive(false);
+
+        SceneManager.LoadScene("Main");
+        audioManager.PlayIngameMusic();
     }
 
     public void SetMusicVolume(float volume)
     {
-        Debug.Log("Music Volume = " + volume);
+        //Debug.Log("Music Volume = " + volume);
+        audioManager.SetMusicVolume(volume);
     }
 
     public void SetSfxVolume(float volume)
     {
-        Debug.Log("SFX Volume = " + volume);
+        //Debug.Log("SFX Volume = " + volume);
+        audioManager.SetSfxVolume(volume);
     }
 
     public void QuitGame()
@@ -145,16 +127,6 @@ public class Menu : MonoBehaviour
         }
     }
 
-    //public void OpenMainMenu()
-    //{
-    //    creditsPanel.SetActive(false);
-    //    optionsPanel.SetActive(false);
-    //    mainPanel.SetActive(true);
-    //    menuBackground.SetActive(true);
-    //    gameEndPanel.SetActive(false);
-    //    gameOverPanel.SetActive(false);
-    //}
-
     public void OpenCreditsMenu()
     {
         mainPanel.SetActive(false);
@@ -198,6 +170,7 @@ public class Menu : MonoBehaviour
     public void ClosePauseMenu()
     {
         pausePanel.SetActive(false);
+        player.PauseMenuClosed();
     }
 
     public void CloseOptionsMenu()
@@ -217,16 +190,19 @@ public class Menu : MonoBehaviour
         gameOverPanel.SetActive(false);
         gameEndPanel.SetActive(false);
         pausePanel.SetActive(false);
+
         menuBackground.SetActive(true);
         mainPanel.SetActive(true);
         
         SceneManager.LoadScene("Menu");
+        audioManager.PlayMenuMusic();
     }
 
     public void Restart()
     {
         gameOverPanel.SetActive(false);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        audioManager.PlayIngameMusic();
     }
 
     public void OpenGameOverPanel()

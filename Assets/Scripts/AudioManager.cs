@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
@@ -28,9 +29,12 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource musicFriendly;
     [SerializeField] AudioSource musicEvil;
     [SerializeField] AudioSource musicEnd;
+    [SerializeField] AudioSource musicTitle;
 
     [SerializeField] private AudioMixerGroup mixerMusic;
     [SerializeField] private AudioMixerGroup mixerSFX;
+
+    private float adjustedMusicVolume = 0.3f;
 
     public enum SoundID
     {
@@ -81,6 +85,7 @@ public class AudioManager : MonoBehaviour
         foreach (var source in sources)
         {
             source.Value.outputAudioMixerGroup = mixerSFX;
+            source.Value.playOnAwake = false;
         }
 
         // For loading scene from menu
@@ -97,20 +102,52 @@ public class AudioManager : MonoBehaviour
         if (id == MusicID.Evil)
         {
             musicFriendly.volume = 0f;
-            musicEvil.volume = 0.2f;
+            musicEvil.volume = adjustedMusicVolume;
             musicEnd.volume = 0f;
         }
         else if (id == MusicID.Friendly)
         {
-            musicFriendly.volume = 0.2f;
+            musicFriendly.volume = adjustedMusicVolume;
             musicEvil.volume = 0f;
             musicEnd.volume = 0f;
         }
         else if (id == MusicID.End)
         {
-            musicFriendly.volume = 0.0f;
+            musicFriendly.volume = 0f;
             musicEvil.volume = 0f;
-            musicEnd.volume = 0.2f;
+            musicEnd.volume = adjustedMusicVolume;
+            musicEnd.Play();
         }
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        Debug.Log("Music Volume = " + volume);
+        mixerMusic.audioMixer.SetFloat("musicVolume", volume);
+    }
+
+    public void SetSfxVolume(float volume)
+    {
+        Debug.Log("SFX Volume = " + volume);
+        mixerMusic.audioMixer.SetFloat("sfxVolume", volume);
+    }
+
+    public void PlayMenuMusic()
+    {
+        musicFriendly.Stop();
+        musicEnd.Stop();
+        musicEvil.Stop();
+        musicTitle.Play();
+    }
+
+    public void PlayIngameMusic()
+    {
+        musicFriendly.Play();
+        musicFriendly.volume = adjustedMusicVolume;
+        musicEvil.Play();
+        musicEvil.volume = 0f;
+        musicEnd.Stop();
+        musicEnd.volume = adjustedMusicVolume;
+        musicTitle.Stop();
     }
 }

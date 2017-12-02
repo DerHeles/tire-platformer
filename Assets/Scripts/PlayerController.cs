@@ -63,6 +63,10 @@ public class PlayerController : MonoBehaviour
 
     private AudioManager m_audioManager;
 
+    private bool m_isInMenu;
+
+    private Menu m_menu;
+
     void Awake()
     {
         // Setting up references.
@@ -76,6 +80,8 @@ public class PlayerController : MonoBehaviour
         m_animator = GetComponent<Animator>();
 
         m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        m_menu = GameObject.Find("Menu").GetComponent<Menu>();
+        m_menu.SetPlayer(this);
     }
 
     private void Start()
@@ -84,13 +90,23 @@ public class PlayerController : MonoBehaviour
         controllable = true;
     }
 
+    public void PauseMenuClosed()
+    {
+        m_isInMenu = false;
+    }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.Escape) && !m_isInMenu && !m_finished)
+        {
+            m_isInMenu = true;
+            m_menu.OpenPauseMenu();
+        }
+        if (Input.GetKeyDown(KeyCode.K) && !m_isInMenu)
         {
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * 3.0f, ForceMode2D.Impulse);
         }
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L) && !m_isInMenu)
         {
             DieAndCry();    
         }
@@ -105,7 +121,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (m_finished)
+        if (m_finished || m_isInMenu)
             return;
 
         // The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
@@ -115,14 +131,12 @@ public class PlayerController : MonoBehaviour
         // If the jump button is pressed and the player is grounded then the player should jump.
         if (Input.GetButtonDown("Jump") && grounded)
             jump = true;
-
-        
     }
 
 
     void FixedUpdate()
     {
-        if (m_finished)
+        if (m_finished || m_isInMenu)
             return;
 
         // Cache the horizontal input.
@@ -294,7 +308,27 @@ public class PlayerController : MonoBehaviour
         m_audioManager.PlaySound(AudioManager.SoundID.Dead);
         m_audioManager.PlayMusic(AudioManager.MusicID.End);
 
-        Debug.Log("TOT");
+        Debug.Log("DieAndCry");
+        StartCoroutine("DelayedGameOver");
+    }
+
+    public void FinishGame()
+    {
+        m_finished = true;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        //m_animator.speed = 0f;
+
+        // other animation
+        // TO DO
+        //m_animator.Play();
+        m_animator.SetTrigger("Dead");
+        m_animator.speed = 0.5f;
+
+        m_audioManager.PlaySound(AudioManager.SoundID.Dead);
+        m_audioManager.PlayMusic(AudioManager.MusicID.End);
+        Debug.Log("FinishGame");
+
+        StartCoroutine("DelayedGameEnd");
     }
 
     public IEnumerator StartAnimation()
@@ -350,5 +384,22 @@ public class PlayerController : MonoBehaviour
         {
             c.enabled = false;
         }
+    }
+
+    public IEnumerator DelayedGameEnd()
+    {
+        yield return new WaitForSeconds(2.5f);
+        m_menu.OpenGameEndPanel();
+    }
+
+    public IEnumerator DelayedGameOver()
+    {
+        yield return new WaitForSeconds(2.5f);
+        m_menu.OpenGameOverPanel();
+    }
+
+    public bool GameFinished()
+    {
+        return m_finished;
     }
 }

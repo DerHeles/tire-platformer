@@ -333,7 +333,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1164261247844124
 GameObject:
   m_ObjectHideFlags: 1
@@ -2890,8 +2890,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 224694492501479992}
   m_HandleRect: {fileID: 224340018723123164}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -70
+  m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
@@ -2982,8 +2982,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 224670337716785146}
   m_HandleRect: {fileID: 224467003290974854}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -70
+  m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
@@ -3762,8 +3762,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 224378087769264658}
   m_HandleRect: {fileID: 224778482489899452}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -70
+  m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
@@ -6075,8 +6075,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 224904911140122888}
   m_HandleRect: {fileID: 224936075011538440}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: -70
+  m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
@@ -8223,7 +8223,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1512423215052416}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 47.7, z: 0}
+  m_LocalPosition: {x: -7.199997, y: 47.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224669764712696380}
@@ -8233,7 +8233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 47.7}
+  m_AnchoredPosition: {x: -7.2, y: 47.7}
   m_SizeDelta: {x: 400, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224746233739307738

@@ -84,7 +84,8 @@ public class WorldSystem : MonoBehaviour
         player.GetComponent<Animator>().SetBool("evil", true);
 
         m_audioManager.PlaySound(AudioManager.SoundID.LosePatch);
-        m_audioManager.PlayMusic(AudioManager.MusicID.Evil);
+        if(!player.GetComponent<PlayerController>().GameFinished()) // Don't play evil music when dead (instead the end music will be played)
+            m_audioManager.PlayMusic(AudioManager.MusicID.Evil);
     }
 
     // Warum gequeued? Wegen physiks sprung?
