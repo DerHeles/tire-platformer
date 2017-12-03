@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -75,6 +76,11 @@ public class PlayerController : MonoBehaviour
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         menu = GameObject.Find("Menu").GetComponent<Menu>();
         menu.Player = this;
+
+        string[] res = UnityStats.screenRes.Split('x');
+        float height = float.Parse(res[1]) * 0.15f;
+        cinematicBars[0].rectTransform.sizeDelta = new Vector2(cinematicBars[0].rectTransform.sizeDelta.x, height);
+        cinematicBars[1].rectTransform.sizeDelta = new Vector2(cinematicBars[1].rectTransform.sizeDelta.x, height);
     }
 
     private void Start()
@@ -145,7 +151,7 @@ public class PlayerController : MonoBehaviour
             body.drag = 0.0f;
 
         // The Speed animator parameter is set to the absolute value of the horizontal input.
-        //anim.SetFloat("Speed", Mathf.Abs(h));
+        //animator.SetFloat("Speed", Mathf.Abs(h));
 
         // If the player is changing direction (h has a different sign to velocity.x) or hasn't reached maxSpeed yet...
         if (h * GetComponent<Rigidbody2D>().velocity.x < maxSpeed)
@@ -285,8 +291,6 @@ public class PlayerController : MonoBehaviour
         thoughtBubble.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         thoughtBubble.SetActive(false);
-        yield return new WaitForSeconds(0.5f);
-        Flip();
         yield return new WaitForSeconds(0.5f);
 
         // Garage Bubble
