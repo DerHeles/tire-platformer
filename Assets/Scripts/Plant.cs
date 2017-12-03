@@ -1,37 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Plant : MonoBehaviour
 {
-    private bool m_grown;
+    [SerializeField] private Animator anim;
 
-    public Sprite grownSprite;
-    public Animator anim;
-
-    private BoxCollider2D collider;
-
-    private AudioManager m_audioManager;
-
-    // Use this for initialization
-    void Start ()
+    private bool grown;
+    private BoxCollider2D platformCollider;
+    private AudioManager audioManager;
+    
+    private void Start ()
 	{
 	    anim.speed = 0.0f;
-	    collider = GetComponent<BoxCollider2D>();
-	    m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+	    platformCollider = GetComponent<BoxCollider2D>();
+	    audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public void Grow()
     {
-        m_grown = true;
-        //transform.localScale = new Vector3(1, 1, 1);
-        anim.speed = 0.4f;
-        collider.enabled = true;
-        m_audioManager.PlaySound(AudioManager.SoundID.PlantGrown);
+        if (!grown)
+        {
+            grown = true;
+            anim.speed = 0.4f;
+            platformCollider.enabled = true;
+            audioManager.PlaySound(AudioManager.SoundID.PlantGrown);
+        }
     }
 }

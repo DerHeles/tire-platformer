@@ -1,26 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GarageDoor : MonoBehaviour
 {
+    [SerializeField] private BrokenGlass glass;
+    [SerializeField] private bool showBubble = true;
+
     private GameObject parent;
-    public BrokenGlass glass;
-
-    private bool showThoughtBubble = true;
-    private AudioManager m_audioManager;
-
-    // Use this for initialization
-    void Start ()
+    private AudioManager audioManager;
+    
+    private void Start ()
 	{
 	    parent = transform.parent.gameObject;
-	    m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+	    audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -32,23 +24,19 @@ public class GarageDoor : MonoBehaviour
                 if (player.HasKey())
                 {
                     player.UseKey();
-                    m_audioManager.PlaySound(AudioManager.SoundID.DoorOpened);
-                    // Open Door
-                    //gameObject.SetActive(false);
+                    audioManager.PlaySound(AudioManager.SoundID.DoorOpened);
                     parent.SetActive(false);
                 }
                 else
                 {
-                    // NO KEY
-                    //Debug.Log(player.GetComponent<Rigidbody2D>().velocity.x);
                     if (Mathf.Abs(player.GetComponent<Rigidbody2D>().velocity.x) > 5.0f)
                     {
                         glass.Break();
-                        m_audioManager.PlaySound(AudioManager.SoundID.DoorRammed);
+                        audioManager.PlaySound(AudioManager.SoundID.DoorRammed);
                     }
-                    if (showThoughtBubble)
+                    if (showBubble)
                     {
-                        showThoughtBubble = false;
+                        showBubble = false;
                         player.ShowKeyBubble();
                     }
                 }

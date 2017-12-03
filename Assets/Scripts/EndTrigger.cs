@@ -1,24 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EndTrigger : MonoBehaviour
 {
-    private bool m_triggered;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private bool triggered;
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (m_triggered)
+        if (triggered)
             return;
 
         if (other.collider.gameObject.CompareTag("Player"))
@@ -27,6 +15,7 @@ public class EndTrigger : MonoBehaviour
             if (player)
             {
                 player.FinishGame();
+                triggered = true;
             }
         }
     }

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
+    [Header("Sound Effects")]
     [SerializeField] private AudioClip bottle;
     [SerializeField] private AudioClip brokenGlassClip;
     [SerializeField] private AudioClip brokenTV;
@@ -24,36 +23,40 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip puddle;
     [SerializeField] private AudioClip spikes;
     [SerializeField] private AudioClip skeletonArm;
+    
+    [Header("Music")]
+    [SerializeField] private AudioSource musicFriendly;
+    [SerializeField] private AudioSource musicEvil;
+    [SerializeField] private AudioSource musicEnd;
+    [SerializeField] private AudioSource musicTitle;
+    [SerializeField] private float adjustedMusicVolume = 0.3f;
 
-    private AudioSource[] audioSources;
-    [SerializeField] AudioSource musicFriendly;
-    [SerializeField] AudioSource musicEvil;
-    [SerializeField] AudioSource musicEnd;
-    [SerializeField] AudioSource musicTitle;
-
+    [Header("Mixer")]
     [SerializeField] private AudioMixerGroup mixerMusic;
     [SerializeField] private AudioMixerGroup mixerSFX;
 
-    private float adjustedMusicVolume = 0.3f;
 
     public enum SoundID
     {
         Bottle, BrokenGlass, BrokenTV, Bubble, Dead, DoorOpened, DoorRammed, FireGhost, Jump, LosePatch, OpenShelf, PickupKey, PickupPatch, PlantGrown, Puddle, Spikes, SkeletonArm, Num
     }
+
     public enum MusicID
     {
         Friendly, Evil, End, Num
     }
 
-    public Dictionary<SoundID, AudioSource> sources;
+    private Dictionary<SoundID, AudioSource> sources;
 
     private void Start()
     {
         sources = new Dictionary<SoundID, AudioSource>();
+
         foreach (SoundID id in Enum.GetValues(typeof(SoundID)))
         {
             sources.Add(id, gameObject.AddComponent<AudioSource>());
         }
+
         sources[SoundID.Bottle].clip = bottle;
         sources[SoundID.BrokenGlass].clip = brokenGlassClip;
         sources[SoundID.BrokenTV].clip = brokenTV;
@@ -72,24 +75,14 @@ public class AudioManager : MonoBehaviour
         sources[SoundID.Spikes].clip = spikes;
         sources[SoundID.SkeletonArm].clip = skeletonArm;
 
-        //musicFriendly = gameObject.AddComponent<AudioSource>();
-        //musicFriendly.volume = 0.2f;
-        //musicFriendly.loop = true;
-        //musicFriendly.Play();
-
-        //musicEvil = gameObject.AddComponent<AudioSource>();
-        //musicEvil.volume = 0.0f;
-        //musicEvil.loop = true;
-        //musicEvil.Play();
-
         foreach (var source in sources)
         {
             source.Value.outputAudioMixerGroup = mixerSFX;
             source.Value.playOnAwake = false;
         }
 
-        // For loading scene from menu
-        DontDestroyOnLoad(this.gameObject);
+        // For loading main scene from menu
+        DontDestroyOnLoad(gameObject);
     }
 
     public void PlaySound(SoundID id)
@@ -122,13 +115,11 @@ public class AudioManager : MonoBehaviour
 
     public void SetMusicVolume(float volume)
     {
-        //Debug.Log("Music Volume = " + volume);
         mixerMusic.audioMixer.SetFloat("musicVolume", volume);
     }
 
     public void SetSfxVolume(float volume)
     {
-        //Debug.Log("SFX Volume = " + volume);
         mixerMusic.audioMixer.SetFloat("sfxVolume", volume);
     }
 

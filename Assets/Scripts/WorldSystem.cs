@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WorldSystem : MonoBehaviour
 {
@@ -9,88 +7,80 @@ public class WorldSystem : MonoBehaviour
         None, Evil, Friendly
     }
 
-    private WorldSwitch m_queuedSwitch;
+    private WorldSwitch queuedSwitch;
 
-    [SerializeField] private Transform worldEvil;
+    [SerializeField] private Transform wordEvil;
     [SerializeField] private Transform worldFriendly;
 
-    private Vector3 m_worldOffset;
-    private bool m_inEvilWorld = false;
+    private Vector3 worldOffset;
+    private bool inEvilWorld;
 
     [SerializeField] private Rigidbody2D player;
-    [SerializeField] private CameraFollow camera;
+    [SerializeField] private CameraFollow mainCamera;
 
-    private bool m_switchQueued = false;
-    
+    private AudioManager audioManager;
 
-    private AudioManager m_audioManager;
-
-    // Use this for initialization
-    void Start ()
+    private void Start ()
     {
-        //m_worldOffset = worldEvil.position - worldFriendly.position;
-        m_worldOffset = worldFriendly.position - worldEvil.position;
+        worldOffset = worldFriendly.position - wordEvil.position;
 
-        m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     private void Update()
     {
-        if (m_queuedSwitch == WorldSwitch.Evil)
+        if (queuedSwitch == WorldSwitch.Evil)
         {
             EnterEvilWorld();
-            m_queuedSwitch = WorldSwitch.None;
+            queuedSwitch = WorldSwitch.None;
         }
-        else if (m_queuedSwitch == WorldSwitch.Friendly)
+        else if (queuedSwitch == WorldSwitch.Friendly)
         {
             EnterFriendlyWorld();
-            m_queuedSwitch = WorldSwitch.None;
+            queuedSwitch = WorldSwitch.None;
         }
 
+        #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (m_inEvilWorld)
-            {
+            if (inEvilWorld)
                 EnterFriendlyWorld();
-            }
             else
-            {
                 EnterEvilWorld();
-            }
         }
+        #endif
     }
 
     public void EnterFriendlyWorld()
     {
-        //player.position += new Vector2(m_worldOffset.x, m_worldOffset.y);
-        player.transform.position += m_worldOffset;
-        m_inEvilWorld = false;
-        //camera.WorldSwitchCameraReset();
-        camera.transform.position += m_worldOffset;
+        player.transform.position += worldOffset;
+        mainCamera.transform.position += worldOffset;
+
+        inEvilWorld = false;
         player.GetComponent<Animator>().SetBool("evil", false);
 
-        m_audioManager.PlaySound(AudioManager.SoundID.PickupPatch);
-        m_audioManager.PlayMusic(AudioManager.MusicID.Friendly);
+        audioManager.PlaySound(AudioManager.SoundID.PickupPatch);
+        audioManager.PlayMusic(AudioManager.MusicID.Friendly);
 
     }
 
     public void EnterEvilWorld()
     {
-        //player.position -= new Vector2(m_worldOffset.x, m_worldOffset.y);
-        player.transform.position -= m_worldOffset;
-        m_inEvilWorld = true;
-        //camera.WorldSwitchCameraReset();
-        camera.transform.position -= m_worldOffset;
+        player.transform.position -= worldOffset;
+        mainCamera.transform.position -= worldOffset;
+
+        inEvilWorld = true;
         player.GetComponent<Animator>().SetBool("evil", true);
 
-        m_audioManager.PlaySound(AudioManager.SoundID.LosePatch);
-        if(!player.GetComponent<PlayerController>().GameFinished()) // Don't play evil music when dead (instead the end music will be played)
-            m_audioManager.PlayMusic(AudioManager.MusicID.Evil);
+        audioManager.PlaySound(AudioManager.SoundID.LosePatch);
+        // Don't play evil music when dead (instead the end music will be played)
+        if (!player.GetComponent<PlayerController>().GameFinished())
+            audioManager.PlayMusic(AudioManager.MusicID.Evil);
     }
 
-    // Warum gequeued? Wegen physiks sprung?
+    // Why queued? 'cause of physical jump?
     public void QueueSwitch(WorldSwitch worldSwitch)
     {
-        m_queuedSwitch = worldSwitch;
+        queuedSwitch = worldSwitch;
     }
 }

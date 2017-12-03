@@ -3674,6 +3674,8 @@ MonoBehaviour:
   musicSliderPause: {fileID: 114448713935137728}
   sfxSliderOptions: {fileID: 114998676286244532}
   sfxSliderPause: {fileID: 114256540370374750}
+  audioManagerPrefab: {fileID: 1370465298059326, guid: 8566e99aedc36e74ab674167a0d7ffd0,
+    type: 2}
 --- !u!114 &114423469943147988
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5189,7 +5191,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Option A
+    - m_Text: Resolutions
       m_Image: {fileID: 0}
     - m_Text: Option B
       m_Image: {fileID: 0}
@@ -5349,7 +5351,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Option A
+    - m_Text: Resolutions
       m_Image: {fileID: 0}
     - m_Text: Option B
       m_Image: {fileID: 0}

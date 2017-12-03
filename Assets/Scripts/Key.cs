@@ -1,14 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class Key : MonoBehaviour
 { 
-    [SerializeField] private Key otherKey;
-    [SerializeField] private Image keyImage;
-    [SerializeField] private Sprite keySprite;
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -18,8 +11,6 @@ public class Key : MonoBehaviour
             {
                 player.PickupKey();
             }
-            if(otherKey)
-                Destroy(otherKey.gameObject);
             Destroy(gameObject);
         }
     }

@@ -185,7 +185,6 @@ GameObject:
   - component: {fileID: 2067862253}
   - component: {fileID: 2067862252}
   - component: {fileID: 2067862251}
-  - component: {fileID: 2067862256}
   - component: {fileID: 2067862255}
   m_Layer: 0
   m_Name: Main Camera
@@ -268,18 +267,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuPrefab: {fileID: 1777812592592402, guid: 88ac993b9aac65948ade4b3f54348d31, type: 2}
-  audioManagerPrefab: {fileID: 1370465298059326, guid: 8566e99aedc36e74ab674167a0d7ffd0,
-    type: 2}
---- !u!114 &2067862256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2067862250}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d22651ea034ac6e459117ccadc01adac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioManagerPrefab: {fileID: 1370465298059326, guid: 8566e99aedc36e74ab674167a0d7ffd0,
-    type: 2}

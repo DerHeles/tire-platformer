@@ -4,32 +4,25 @@ using UnityEngine;
 
 public class Bottle : MonoBehaviour
 {
-    public Animator anim;
-    public Plant plant;
+    [SerializeField] private Plant plant;
 
     private bool triggered;
-    private AudioManager m_audioManager;
+    private Animator animator;
+    private AudioManager audioManager;
 
-    // Use this for initialization
-    void Start ()
-	{
-	    anim.speed = 0.0f;
-	    m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+    private void Start ()
+    {
+        animator = GetComponent<Animator>();
+	    animator.speed = 0.0f;
+	    audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	    if (Input.GetKeyDown(KeyCode.F))
-	    {
-            anim.SetTrigger("TouchBottle");
-	        anim.speed = 1.0f;
-        }
-	    if (triggered)
+
+    private void Update () {
+        if (triggered)
 	        return;
 
-	    if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.98f)
+	    if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.98f)
 	    {
-	        Debug.Log("Plant Grow");
 	        triggered = true;
 	        plant.Grow();
         }
@@ -41,12 +34,8 @@ public class Bottle : MonoBehaviour
             return;
         if (other.gameObject.CompareTag("Player"))
         {
-            var player = other.gameObject.GetComponent<PlayerController>();
-            //player.ReceiveDamage();
-            //anim.SetTrigger("TouchBottle");
-            anim.speed = 0.6f;
-            Debug.Log("BOTTLE");
-            m_audioManager.PlaySound(AudioManager.SoundID.Bottle);
+            animator.speed = 0.6f;
+            audioManager.PlaySound(AudioManager.SoundID.Bottle);
         }
     }
 }

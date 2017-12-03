@@ -1,48 +1,47 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-/*
- * customized version of https://www.assetstore.unity3d.com/en/#!/content/11228 
- * 
- */
-
 
 public class PlayerController : MonoBehaviour
 {
-	[HideInInspector]
-    public bool facingRight = true;         // For determining which way the player is currently facing.
-    [HideInInspector]
-    public bool jump = false;               // Condition for whether the player should jump.
+    [SerializeField] private int hitpoints = 4;
 
+    [Header("Movement")]
+    [SerializeField] private float moveForce = 10f;
+    [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] private float jumpForce = 1000f;
+    [SerializeField] private float airMoveForce = 5f;
 
-    public float moveForce = 10f;          // Amount of force added to move the player left and right.
-    public float maxSpeed = 5f;             // The fastest the player can travel in the x axis.
-    public float jumpForce = 1000f;         // Amount of force added when the player jumps.
-    public float airMoveForce = 5f;
-    
-    private Transform groundCheck;          // A position marking where to check if the player is grounded.
+    public float JumpForce
+    {
+        get { return jumpForce; }
+        set { jumpForce = value; }
+    }
+
+    public float AirMoveForce
+    {
+        get { return airMoveForce; }
+        set { airMoveForce = value; }
+    }
+
+    private bool facingRight = true;
+    private bool jump;
+
+    private Transform groundCheck;
     private Transform groundCheck2;
-    [SerializeField]
-    private bool grounded = false;          // Whether or not the player is grounded.
-    //private Animator anim;                  // Reference to the player's m_animator component.
+    private bool grounded;
+    
+    [SerializeField] private bool forbidAirMovement;
+    [SerializeField] private float movementDrag = 2.0f;
+    
+    private float currentDamageTime;
+    private float damageTime = 0.25f;
 
-    private Rigidbody2D m_body;
-
-    [SerializeField] private bool m_forbidAirMovement = false;
-
-    [SerializeField] private float m_movementDrag = 2.0f;
-
-    [SerializeField] private int m_hitpoints = 3;
-
-
-    private float m_currentDamageTime;
-    private float m_damageTime = 0.25f;
-    private SpriteRenderer m_spriteRenderer;
-
-    private Animator m_animator;
-    private bool m_hasKey;
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D body;
+    private Animator animator;
+    private bool hasKey;
 
     [Header("UI")]
     [SerializeField] private Image[] m_patchImages;
@@ -51,77 +50,68 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Sprite keySprite;
     [SerializeField] private Sprite keySpriteInvisible;
 
-    private bool m_finished = false;
+    [SerializeField] private Image[] cinematicBars;
+    [SerializeField] private GameObject thoughtBubble;
+    [SerializeField] private GameObject thoughtBubbleGarage;
+    [SerializeField] private GameObject thoughtBubbleKey;
 
-    public AnimationClip deadAnimation;
+    private AudioManager audioManager;
 
+    private Menu menu;
+    private bool isInMenu;
+
+    private bool finished;
     private bool controllable;
-    public Image[] cinematicBars;
-    public GameObject thoughtBubble;
-    public GameObject thoughtBubbleGarage;
-    public GameObject thoughtBubbleKey;
 
-    private AudioManager m_audioManager;
-
-    private bool m_isInMenu;
-
-    private Menu m_menu;
-
-    void Awake()
+    private void Awake()
     {
-        // Setting up references.
         groundCheck = transform.Find("groundCheck");
         groundCheck2 = transform.Find("groundCheck2");
-        //anim = GetComponent<Animator>();
-        m_body = GetComponent<Rigidbody2D>();
-        //Debug.Log("Drag=" + m_body.drag);
-        m_spriteRenderer = GetComponent<SpriteRenderer>();
 
-        m_animator = GetComponent<Animator>();
+        body = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
 
-        m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        m_menu = GameObject.Find("Menu").GetComponent<Menu>();
-        m_menu.SetPlayer(this);
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        menu = GameObject.Find("Menu").GetComponent<Menu>();
+        menu.Player = this;
     }
 
     private void Start()
     {
-        //StartCoroutine("StartAnimation");
-        controllable = true;
-    }
-
-    public void PauseMenuClosed()
-    {
-        m_isInMenu = false;
+        StartCoroutine("StartAnimation");
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !m_isInMenu && !m_finished)
+        if (Input.GetKeyDown(KeyCode.Escape) && !isInMenu && !finished && controllable)
         {
-            m_isInMenu = true;
-            m_menu.OpenPauseMenu();
+            isInMenu = true;
+            menu.OpenPauseMenu();
         }
-        if (Input.GetKeyDown(KeyCode.K) && !m_isInMenu)
+
+        #if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.K) && !isInMenu)
         {
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * 3.0f, ForceMode2D.Impulse);
         }
-        if (Input.GetKeyDown(KeyCode.L) && !m_isInMenu)
+        if (Input.GetKeyDown(KeyCode.L) && !isInMenu)
         {
-            DieAndCry();    
+            DieAndCry();
         }
+        #endif
 
-        if (m_currentDamageTime > 0.0f)
+        if (currentDamageTime > 0.0f)
         {
-            m_currentDamageTime -= Time.deltaTime;
-            if (m_currentDamageTime <= 0.0f)
+            currentDamageTime -= Time.deltaTime;
+            if (currentDamageTime <= 0.0f)
             {
-                m_currentDamageTime = 0.0f;
-                m_spriteRenderer.color = Color.white;
+                currentDamageTime = 0.0f;
+                spriteRenderer.color = Color.white;
             }
         }
 
-        if (m_finished || m_isInMenu)
+        if (finished || isInMenu)
             return;
 
         // The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
@@ -134,63 +124,45 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if (m_finished || m_isInMenu)
-            return;
+        float tolerance = 0.00001f;
 
-        // Cache the horizontal input.
+        if (finished || isInMenu)
+            return;
+        
         float h = Input.GetAxisRaw("Horizontal");
 
         if (!controllable)
             h = 0f;
 
         // If no horizontal input --> idle
-        //m_animator.SetBool("Idle", h == 0);
-        m_animator.speed = (h == 0) ? 0.0f : 1.0f;
-        
+        animator.speed = (Math.Abs(h) < tolerance) ? 0.0f : 1.0f;
 
-        if (grounded && h == 0.0f)
-        {
-            //GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            //Debug.Log("BREMSEN");
-            m_body.drag = m_movementDrag;
-
-            //m_animator.SetBool("Idle", true);
-        }
+        if (grounded && (Math.Abs(h) < tolerance))
+            body.drag = movementDrag;
         else
-        {
-            m_body.drag = 0.0f;
-        }
+            body.drag = 0.0f;
 
-        // The Speed m_animator parameter is set to the absolute value of the horizontal input.
+        // The Speed animator parameter is set to the absolute value of the horizontal input.
         //anim.SetFloat("Speed", Mathf.Abs(h));
 
         // If the player is changing direction (h has a different sign to velocity.x) or hasn't reached maxSpeed yet...
         if (h * GetComponent<Rigidbody2D>().velocity.x < maxSpeed)
         {
-            if (m_forbidAirMovement)
+            if (forbidAirMovement)
             {
                 if (grounded)
-                {
-                    // ... add a force to the player.
                     GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * moveForce);
-                }
             }
             else
             {
                 if (grounded)
-                {
-                    // ... add a force to the player.
                     GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * moveForce);
-                }
                 else
-                {
-                    GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * airMoveForce);
-                }
+                    GetComponent<Rigidbody2D>().AddForce(Vector2.right * h * AirMoveForce);
             }
         }
-            
 
         // If the player's horizontal velocity is greater than the maxSpeed...
         if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > maxSpeed)
@@ -198,61 +170,45 @@ public class PlayerController : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(GetComponent<Rigidbody2D>().velocity.x) * maxSpeed, GetComponent<Rigidbody2D>().velocity.y);
 
         // If the input is moving the player right and the player is facing left...
-        if (h > 0 && !facingRight)
+        if (h >= tolerance && !facingRight)
             // ... flip the player.
             Flip();
         // Otherwise if the input is moving the player left and the player is facing right...
-        else if (h < 0 && facingRight)
+        else if (h < tolerance && facingRight)
             // ... flip the player.
             Flip();
-
-        // If the player should jump...
+        
         if (jump && controllable)
         {
-            // Set the Jump m_animator trigger parameter.
-            //anim.SetTrigger("Jump");
+            audioManager.PlaySound(AudioManager.SoundID.Jump);
+
+            // Add a vertical force to jump
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, JumpForce));
             
-            //AudioSource.PlayClipAtPoint(jumpClips[i], transform.position);
-            m_audioManager.PlaySound(AudioManager.SoundID.Jump);
-
-            // Add a vertical force to the player.
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpForce));
-
-            // Make sure the player can't jump again until the jump conditions from Update are satisfied.
             jump = false;
         }
     }
 
-
-    void Flip()
+    private void Flip()
     {
         // Switch the way the player is labelled as facing.
         facingRight = !facingRight;
-
-        // Multiply the player's x local scale by -1.
-        //Vector3 theScale = transform.localScale;
-        //theScale.x *= -1;
-        //transform.localScale = theScale;
         GetComponent<SpriteRenderer>().flipX = !facingRight; // Potential fix for platform glitch
     }
 
     public void ReceiveDamage()
     {
-        if (m_hitpoints > 0)
+        if (hitpoints > 0)
         {
-            m_currentDamageTime = m_damageTime;
-            m_spriteRenderer.color = Color.red;
+            currentDamageTime = damageTime;
+            spriteRenderer.color = Color.red;
+            hitpoints--;
 
-            m_hitpoints--;
             ShowCurrentLifeStatus();
-            if (m_hitpoints == 0)
-            {
-                Debug.Log("DEAD");
+
+            if (hitpoints == 0)
                 DieAndCry();
-                
-            }
         }
-        Debug.Log("DAMAGE");
     }
 
     private void ShowCurrentLifeStatus()
@@ -263,70 +219,59 @@ public class PlayerController : MonoBehaviour
         }
         for (int i = 0; i < m_patchImages.Length; ++i)
         {
-            if (m_hitpoints >= (i+1))
+            if (hitpoints >= (i+1))
                 m_patchImages[i].enabled = true;
         }
     }
 
     public bool HasKey()
     {
-        return m_hasKey;
+        return hasKey;
     }
 
     public void UseKey()
     {
-        m_hasKey = false;
+        hasKey = false;
         keyImage.sprite = keySpriteInvisible;
     }
 
     public void PickupKey()
     {
-        m_hasKey = true;
+        hasKey = true;
         keyImage.sprite = keySprite;
-        m_audioManager.PlaySound(AudioManager.SoundID.PickupKey);
+        audioManager.PlaySound(AudioManager.SoundID.PickupKey);
     }
 
     public void PickupPatch()
     {
-        //m_hitpoints++;
-        //m_hitpoints = Math.Min(m_hitpoints, 3);
+        // Only update life status, world switch is handled by patch/world system
         ShowCurrentLifeStatus();
     }
 
     public void DieAndCry()
     {
-        m_finished = true;
+        finished = true;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        //m_animator.speed = 0f;
 
-        // other animation
-        // TO DO
-        //m_animator.Play();
-        m_animator.SetTrigger("Dead");
-        m_animator.speed = 0.5f;
+        animator.SetTrigger("Dead");
+        animator.speed = 0.5f;
 
-        m_audioManager.PlaySound(AudioManager.SoundID.Dead);
-        m_audioManager.PlayMusic(AudioManager.MusicID.End);
-
-        Debug.Log("DieAndCry");
+        audioManager.PlaySound(AudioManager.SoundID.Dead);
+        audioManager.PlayMusic(AudioManager.MusicID.End);
+        
         StartCoroutine("DelayedGameOver");
     }
 
     public void FinishGame()
     {
-        m_finished = true;
+        finished = true;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        //m_animator.speed = 0f;
 
-        // other animation
-        // TO DO
-        //m_animator.Play();
-        m_animator.SetTrigger("Dead");
-        m_animator.speed = 0.5f;
+        animator.SetTrigger("Dead");
+        animator.speed = 0.5f;
 
-        m_audioManager.PlaySound(AudioManager.SoundID.Dead);
-        m_audioManager.PlayMusic(AudioManager.MusicID.End);
-        Debug.Log("FinishGame");
+        audioManager.PlaySound(AudioManager.SoundID.Dead);
+        audioManager.PlayMusic(AudioManager.MusicID.End);
 
         StartCoroutine("DelayedGameEnd");
     }
@@ -335,8 +280,8 @@ public class PlayerController : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
-        // Bubble
-        m_audioManager.PlaySound(AudioManager.SoundID.Bubble);
+        // Question Bubble
+        audioManager.PlaySound(AudioManager.SoundID.Bubble);
         thoughtBubble.SetActive(true);
         yield return new WaitForSeconds(2.0f);
         thoughtBubble.SetActive(false);
@@ -345,10 +290,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         // Garage Bubble
-        m_audioManager.PlaySound(AudioManager.SoundID.Bubble);
+        audioManager.PlaySound(AudioManager.SoundID.Bubble);
         thoughtBubbleGarage.SetActive(true);
         yield return new WaitForSeconds(2.0f);
-        GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 0.4f * jumpForce));
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 0.4f * JumpForce));
         yield return new WaitForSeconds(1.0f);
         thoughtBubbleGarage.SetActive(false);
         yield return new WaitForSeconds(0.5f);
@@ -373,7 +318,7 @@ public class PlayerController : MonoBehaviour
             c.enabled = true;
         }
         yield return new WaitForSeconds(0.5f);
-        m_audioManager.PlaySound(AudioManager.SoundID.Bubble);
+        audioManager.PlaySound(AudioManager.SoundID.Bubble);
         thoughtBubbleKey.SetActive(true);
         
         yield return new WaitForSeconds(2.0f);
@@ -389,17 +334,22 @@ public class PlayerController : MonoBehaviour
     public IEnumerator DelayedGameEnd()
     {
         yield return new WaitForSeconds(2.5f);
-        m_menu.OpenGameEndPanel();
+        menu.OpenGameEndPanel();
     }
 
     public IEnumerator DelayedGameOver()
     {
         yield return new WaitForSeconds(2.5f);
-        m_menu.OpenGameOverPanel();
+        menu.OpenGameOverPanel();
     }
 
     public bool GameFinished()
     {
-        return m_finished;
+        return finished;
+    }
+
+    public void PauseMenuClosed()
+    {
+        isInMenu = false;
     }
 }

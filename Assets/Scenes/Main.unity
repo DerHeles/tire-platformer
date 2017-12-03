@@ -1425,11 +1425,11 @@ MonoBehaviour:
   timeWindow: 3
   minTimesTriggered: 3
   ghost: {fileID: 1112168047}
-  tv: {fileID: 549553605}
-  brokenTVSprite: {fileID: 21300000, guid: a7c88387acece7848a7025f4c4eceb57, type: 3}
   patch: {fileID: 569968210}
-  friendlyTV: {fileID: 1021217432}
-  friendlyTVSprite: {fileID: 21300000, guid: dade09cf7ad1a7b43aa755e0148a13ee, type: 3}
+  tv: {fileID: 549553605}
+  tvBrokenSprite: {fileID: 21300000, guid: a7c88387acece7848a7025f4c4eceb57, type: 3}
+  tvFriendly: {fileID: 1021217432}
+  tvFriendlySprite: {fileID: 21300000, guid: dade09cf7ad1a7b43aa755e0148a13ee, type: 3}
 --- !u!1 &176274790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1913,7 +1913,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 197895677}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 510, y: 269.5, z: 0}
+  m_LocalPosition: {x: 314.5, y: 159.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 628339958}
@@ -2995,8 +2995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1a5f41db0bbae2489c5aff23f7a7313, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_world: {fileID: 1434742912}
-  anim: {fileID: 297165458}
+  world: {fileID: 1434742912}
 --- !u!58 &297165462
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4301,7 +4300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31db52408d0c4f749b9ca42c0fd06d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerTransform: {fileID: 1648432228}
+  playerTransform: {fileID: 1648432228}
   dampTime: 0.1
 --- !u!1 &468444701
 GameObject:
@@ -5281,7 +5280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &623845259
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5289,7 +5288,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 623845258}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -300.5, z: 0}
+  m_LocalPosition: {x: 0, y: -190.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 628339958}
@@ -5312,7 +5311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.04411763, g: 0.04119808, b: 0.04119808, a: 1}
+  m_Color: {r: 0.025, g: 0.025, b: 0.025, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -5415,7 +5414,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 628339954}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 534, y: 300.5, z: 0}
+  m_LocalPosition: {x: 338.5, y: 190.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 738984817}
@@ -5877,7 +5876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2e47ba240478740819455a58574f35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_world: {fileID: 1434742912}
+  world: {fileID: 1434742912}
   isPuddle: 0
 --- !u!50 &718622253
 Rigidbody2D:
@@ -6011,7 +6010,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 738984816}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -494.3, y: 269.5, z: 0}
+  m_LocalPosition: {x: -298.8, y: 159.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 628339958}
@@ -7747,12 +7746,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a9eb004d376532478c1cbaab8c65ec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_spikesTriggeredSprite: {fileID: 21300000, guid: 08ada05d19a76b047a899006d890439c,
-    type: 3}
   patchPrefab: {fileID: 1336728737367692, guid: ad20d40fd6e114041b307136ab8f3906,
     type: 2}
   spawnLocation: {fileID: 1123816746}
-  m_world: {fileID: 1434742912}
+  world: {fileID: 1434742912}
+  spikesTriggeredSprite: {fileID: 21300000, guid: 08ada05d19a76b047a899006d890439c,
+    type: 3}
 --- !u!1001 &962101538
 Prefab:
   m_ObjectHideFlags: 0
@@ -7795,6 +7794,10 @@ Prefab:
     - target: {fileID: 1370465298059326, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
       propertyPath: m_Name
       value: AudioManager Debug
+      objectReference: {fileID: 0}
+    - target: {fileID: 1370465298059326, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8566e99aedc36e74ab674167a0d7ffd0, type: 2}
@@ -8452,7 +8455,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1045058490}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -344.3, y: 269.5, z: 0}
+  m_LocalPosition: {x: -148.79999, y: 159.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 628339958}
@@ -9716,7 +9719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2e47ba240478740819455a58574f35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_world: {fileID: 1434742912}
+  world: {fileID: 1434742912}
   isPuddle: 0
 --- !u!1 &1251388193
 GameObject:
@@ -9824,7 +9827,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 825a523d79feca44181406272c8fa048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grownSprite: {fileID: 0}
   anim: {fileID: 1251388194}
 --- !u!50 &1251388198
 Rigidbody2D:
@@ -11114,7 +11116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab2e47ba240478740819455a58574f35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_world: {fileID: 1434742912}
+  world: {fileID: 1434742912}
   isPuddle: 1
 --- !u!70 &1417798403
 CapsuleCollider2D:
@@ -11383,10 +11385,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b274e8be84056bd42a818c7781a12daf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldEvil: {fileID: 108698798}
+  wordEvil: {fileID: 108698798}
   worldFriendly: {fileID: 1497343984}
   player: {fileID: 1648432229}
-  camera: {fileID: 465587277}
+  mainCamera: {fileID: 465587277}
 --- !u!1 &1442338602
 GameObject:
   m_ObjectHideFlags: 0
@@ -12265,6 +12267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   glass: {fileID: 297165461}
+  showBubble: 1
 --- !u!1 &1549523447
 GameObject:
   m_ObjectHideFlags: 0
@@ -13283,16 +13286,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e967c981fb13f74db2b9c30764c3d73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  facingRight: 1
-  jump: 0
+  hitpoints: 4
   moveForce: 10
   maxSpeed: 7
   jumpForce: 320
   airMoveForce: 5
-  grounded: 0
-  m_forbidAirMovement: 0
-  m_movementDrag: 2
-  m_hitpoints: 4
+  forbidAirMovement: 0
+  movementDrag: 2
   m_patchImages:
   - {fileID: 738984818}
   - {fileID: 1669497081}
@@ -13301,7 +13301,6 @@ MonoBehaviour:
   keyImage: {fileID: 197895679}
   keySprite: {fileID: 21300000, guid: b148b296d1f610748b3149cbbb7aa378, type: 3}
   keySpriteInvisible: {fileID: 21300000, guid: 0a5f715cf3b40384ba9444aa0622a411, type: 3}
-  deadAnimation: {fileID: 7400000, guid: 1bf8770ec3a0d054894ca3c595a1cd8e, type: 2}
   cinematicBars:
   - {fileID: 1739946865}
   - {fileID: 623845260}
@@ -13481,7 +13480,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1669497079}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -444.3, y: 269.5, z: 0}
+  m_LocalPosition: {x: -248.8, y: 159.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 628339958}
@@ -13894,7 +13893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1739946864
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13902,7 +13901,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1739946863}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 300.5, z: 0}
+  m_LocalPosition: {x: 0, y: 190.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 628339958}
@@ -13925,7 +13924,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.04411763, g: 0.04119808, b: 0.04119808, a: 1}
+  m_Color: {r: 0.025, g: 0.025, b: 0.025, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -15390,7 +15389,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1921369416}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -394.3, y: 269.5, z: 0}
+  m_LocalPosition: {x: -198.79999, y: 159.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 628339958}

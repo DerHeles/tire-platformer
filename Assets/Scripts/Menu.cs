@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -23,33 +20,36 @@ public class Menu : MonoBehaviour
     [SerializeField] private Slider sfxSliderOptions;
     [SerializeField] private Slider sfxSliderPause;
 
+    [SerializeField] private GameObject audioManagerPrefab;
     private AudioManager audioManager;
 
+    public PlayerController Player
+    {
+        get { return player; }
+        set { player = value; }
+    }
     private PlayerController player;
 
-    public void SetPlayer(PlayerController player)
+    private void Start()
     {
-        this.player = player;
-    }
-
-    // Use this for initialization
-    void Start()
-    {
+        // To maintain this between scenes
         DontDestroyOnLoad(gameObject);
 
         resDropdown.onValueChanged.AddListener(OnResolutionChanged);
         resDropdownPause.onValueChanged.AddListener(OnResolutionChanged);
 
         fullscreenToggle.onValueChanged.AddListener(OnFullscreenToggle);
-
         fullscreenToggle.isOn = Screen.fullScreen;
 
         fullscreenTogglePause.onValueChanged.AddListener(OnFullscreenToggle);
-
         fullscreenTogglePause.isOn = Screen.fullScreen;
 
-        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        audioManager = GameObject.Find("AudioManager") ? GameObject.Find("AudioManager").GetComponent<AudioManager>() : Instantiate(audioManagerPrefab).GetComponent<AudioManager>();
+        audioManager.name = "AudioManager";
         audioManager.PlayMenuMusic();
+
+        resDropdown.captionText.text = "Resolution";
+        resDropdownPause.captionText.text = "Resolution";
     }
 
     public void OnFullscreenToggle(bool isOn)
@@ -59,14 +59,7 @@ public class Menu : MonoBehaviour
 
     public void OnResolutionChanged(int index)
     {
-        //Debug.Log("Resolution (" + index + ") = " + resDropdown.options[index].text);
         Screen.SetResolution(Screen.resolutions[index].width, Screen.resolutions[index].height, Screen.fullScreen);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void StartGame()
@@ -80,7 +73,6 @@ public class Menu : MonoBehaviour
 
     public void SetMusicVolume(float volume)
     {
-        //Debug.Log("Music Volume = " + volume);
         audioManager.SetMusicVolume(volume);
 
         musicSliderOptions.value = volume;
@@ -89,7 +81,6 @@ public class Menu : MonoBehaviour
 
     public void SetSfxVolume(float volume)
     {
-        //Debug.Log("SFX Volume = " + volume);
         audioManager.SetSfxVolume(volume);
 
         sfxSliderOptions.value = volume;
@@ -117,7 +108,6 @@ public class Menu : MonoBehaviour
         Resolution[] resolutions = Screen.resolutions;
 
         resDropdown.options.Clear();
-        int i = 0;
         foreach (var res in resolutions)
         {
             string text = "";
@@ -133,14 +123,6 @@ public class Menu : MonoBehaviour
             text += " @ " + res.refreshRate + "Hz";
 
             resDropdown.options.Add(new Dropdown.OptionData(text));
-
-            if (Screen.width == res.width && Screen.height == res.height &&
-                Screen.currentResolution.refreshRate == res.refreshRate)
-            {
-                resDropdown.value = i;
-                resDropdown.Select();
-            }
-            i++;
         }
     }
 
@@ -159,7 +141,6 @@ public class Menu : MonoBehaviour
         Resolution[] resolutions = Screen.resolutions;
 
         resDropdownPause.options.Clear();
-        int i = 0;
         foreach (var res in resolutions)
         {
             string text = "";
@@ -175,21 +156,13 @@ public class Menu : MonoBehaviour
             text += " @ " + res.refreshRate + "Hz";
 
             resDropdownPause.options.Add(new Dropdown.OptionData(text));
-
-            if (Screen.width == res.width && Screen.height == res.height &&
-                Screen.currentResolution.refreshRate == res.refreshRate)
-            {
-                resDropdownPause.value = i;
-                resDropdownPause.Select();
-            }
-            i++;
         }
     }
 
     public void ClosePauseMenu()
     {
         pausePanel.SetActive(false);
-        player.PauseMenuClosed();
+        Player.PauseMenuClosed();
     }
 
     public void CloseOptionsMenu()

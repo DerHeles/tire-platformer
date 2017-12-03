@@ -1,41 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GhostSpawn : MonoBehaviour
 {
-    public float timeWindow = 4.0f;
+    [SerializeField] private float timeWindow = 4.0f;
     private float timeLeft;
 
-    public int minTimesTriggered = 3;
-
+    [SerializeField] private int minTimesTriggered = 3;
     private int currentTimesTriggered;
 
     private bool currentlyChecking;
     private bool triggered;
 
-    public Ghost ghost;
-    public SpriteRenderer tv;
-    public Sprite brokenTVSprite;
-    public GameObject patch;
+    [SerializeField] private Ghost ghost;
+    [SerializeField] private GameObject patch;
+    [SerializeField] private SpriteRenderer tv;
+    [SerializeField] private Sprite tvBrokenSprite;
+    [SerializeField] private SpriteRenderer tvFriendly;
+    [SerializeField] private Sprite tvFriendlySprite;
 
-    public SpriteRenderer friendlyTV;
-    public Sprite friendlyTVSprite;
-    private AudioManager m_audioManager;
+    private AudioManager audioManager;
 
-    //private bool
+    private void Start () {
 
-    // Use this for initialization
-    void Start () {
-
-        m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 	
-	// Update is called once per frame
-	void Update ()
+    private void Update ()
 	{
 	    if (triggered)
 	        return;
+
 	    if (currentlyChecking)
 	    {
 	        timeLeft -= Time.deltaTime;
@@ -54,23 +48,20 @@ public class GhostSpawn : MonoBehaviour
 
         if (other.gameObject.CompareTag("TV"))
         {
-            // TO DO   
-
             if (currentlyChecking)
             {
                 currentTimesTriggered++;
                 if (currentTimesTriggered >= minTimesTriggered)
                 {
-                    // SPAWN GHOST
-                    Debug.Log("GHOST");
                     triggered = true;
                     ghost.Fly();
-                    tv.sprite = brokenTVSprite;
-                    friendlyTV.sprite = friendlyTVSprite;
                     patch.SetActive(true);
 
-                    m_audioManager.PlaySound(AudioManager.SoundID.BrokenTV);
-                    m_audioManager.PlaySound(AudioManager.SoundID.FireGhost);
+                    tv.sprite = tvBrokenSprite;
+                    tvFriendly.sprite = tvFriendlySprite;
+
+                    audioManager.PlaySound(AudioManager.SoundID.BrokenTV);
+                    audioManager.PlaySound(AudioManager.SoundID.FireGhost);
                 }
             }
             else
