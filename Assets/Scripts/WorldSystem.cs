@@ -53,6 +53,9 @@ public class WorldSystem : MonoBehaviour
 
     public void EnterFriendlyWorld()
     {
+        if (!inEvilWorld)
+            return;
+
         player.transform.position += worldOffset;
         mainCamera.transform.position += worldOffset;
 
@@ -66,6 +69,9 @@ public class WorldSystem : MonoBehaviour
 
     public void EnterEvilWorld()
     {
+        if (inEvilWorld)
+            return;
+
         player.transform.position -= worldOffset;
         mainCamera.transform.position -= worldOffset;
 

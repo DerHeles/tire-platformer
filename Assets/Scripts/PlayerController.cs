@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -77,10 +79,18 @@ public class PlayerController : MonoBehaviour
         menu = GameObject.Find("Menu").GetComponent<Menu>();
         menu.Player = this;
 
-        string[] res = UnityStats.screenRes.Split('x');
-        float height = float.Parse(res[1]) * 0.15f;
+#if UNITY_STANDALONE
+        float height = Screen.height * 0.15f;
         cinematicBars[0].rectTransform.sizeDelta = new Vector2(cinematicBars[0].rectTransform.sizeDelta.x, height);
         cinematicBars[1].rectTransform.sizeDelta = new Vector2(cinematicBars[1].rectTransform.sizeDelta.x, height);
+#endif
+
+#if UNITY_EDITOR
+        string[] res = UnityStats.screenRes.Split('x');
+        float heightEditor = float.Parse(res[1]) * 0.15f;
+        cinematicBars[0].rectTransform.sizeDelta = new Vector2(cinematicBars[0].rectTransform.sizeDelta.x, heightEditor);
+        cinematicBars[1].rectTransform.sizeDelta = new Vector2(cinematicBars[1].rectTransform.sizeDelta.x, heightEditor);
+#endif
     }
 
     private void Start()
@@ -176,11 +186,11 @@ public class PlayerController : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = new Vector2(Mathf.Sign(GetComponent<Rigidbody2D>().velocity.x) * maxSpeed, GetComponent<Rigidbody2D>().velocity.y);
 
         // If the input is moving the player right and the player is facing left...
-        if (h >= tolerance && !facingRight)
+        if (h > tolerance && !facingRight)
             // ... flip the player.
             Flip();
         // Otherwise if the input is moving the player left and the player is facing right...
-        else if (h < tolerance && facingRight)
+        else if (h < -tolerance && facingRight)
             // ... flip the player.
             Flip();
         
@@ -189,7 +199,7 @@ public class PlayerController : MonoBehaviour
             audioManager.PlaySound(AudioManager.SoundID.Jump);
 
             // Add a vertical force to jump
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, JumpForce));
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpForce));
             
             jump = false;
         }
@@ -292,6 +302,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         thoughtBubble.SetActive(false);
         yield return new WaitForSeconds(0.5f);
+        Flip();
+        yield return new WaitForSeconds(0.5f);
+
 
         // Garage Bubble
         audioManager.PlaySound(AudioManager.SoundID.Bubble);
